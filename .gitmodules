@@ -1,0 +1,4 @@
+[submodule "springboot-board-config"]
+	path = springboot-board-config
+	url = https://github.com/prlhspt/springboot-board-config.git
+    branch = main

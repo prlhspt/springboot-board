@@ -46,3 +46,9 @@ tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
 }
+
+task copySubmodule(type: Copy) {
+	from './springboot-board-config'
+	include '*.yml'
+	into './src/main/resources'
+}
