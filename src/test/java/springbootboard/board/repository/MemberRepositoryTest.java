@@ -1,28 +1,31 @@
-package springbootboard.board;
+package springbootboard.board.repository;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.Role;
 
-import javax.persistence.EntityManager;
-
 import static org.assertj.core.api.Assertions.*;
-import static springbootboard.board.domain.member.QMember.*;
 
 @SpringBootTest
-@Transactional
-public class QuerydslApplicationTests {
+class MemberRepositoryTest {
 
     @Autowired
-    EntityManager em;
+    MemberRepository memberRepository;
+
+    @AfterEach
+    public void cleanup() {
+        memberRepository.deleteAll();
+    }
 
     @Test
-    void contextLoads() {
+    @DisplayName("멤버 저장")
+    public void save() throws Exception {
+        //given
         Member testMember = Member.builder()
                 .username("username")
                 .password("member1234")
@@ -31,14 +34,17 @@ public class QuerydslApplicationTests {
                 .nickname("member")
                 .role(Role.USER)
                 .build();
-        em.persist(testMember);
 
-        JPAQueryFactory query = new JPAQueryFactory(em);
+        Member member = memberRepository.save(testMember);
 
-        Member result = query
-                .selectFrom(member)
-                .fetchOne();
+        //when
+        Member findMember = memberRepository.findById(member.getId()).get();
 
-        assertThat(result.getId()).isEqualTo(testMember.getId());
+        //then
+        assertThat(findMember.getId()).isEqualTo(member.getId());
+        assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
+
     }
+
+
 }
