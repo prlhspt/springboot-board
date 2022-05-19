@@ -8,6 +8,8 @@ import springbootboard.board.domain.BaseEntity;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -31,7 +33,7 @@ public class Attachment extends BaseEntity {
     @Column(nullable = false)
     private Long size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     private Post post;
 
     @Builder

@@ -5,10 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import springbootboard.board.domain.BaseEntity;
+import springbootboard.board.domain.member.Member;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,8 +35,15 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private boolean deleted;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Attachment> attachment = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(String title, String content) {
@@ -41,5 +51,15 @@ public class Post extends BaseEntity {
         this.content = content;
         this.view = 0L;
         this.deleted = false;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getPosts().add(this);
+    }
+
+    public void addComments(Comment comment) {
+        comments.add(comment);
+        comment.setPost(this);
     }
 }

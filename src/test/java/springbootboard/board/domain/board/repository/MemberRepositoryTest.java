@@ -1,15 +1,15 @@
-package springbootboard.board.repository;
+package springbootboard.board.domain.board.repository;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import springbootboard.board.domain.member.Member;
+import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class MemberRepositoryTest {

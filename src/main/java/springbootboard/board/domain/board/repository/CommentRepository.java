@@ -1,4 +1,4 @@
-package springbootboard.board.repository;
+package springbootboard.board.domain.board.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import springbootboard.board.domain.board.Comment;

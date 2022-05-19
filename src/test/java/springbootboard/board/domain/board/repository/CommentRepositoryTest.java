@@ -1,4 +1,4 @@
-package springbootboard.board.repository;
+package springbootboard.board.domain.board.repository;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +22,7 @@ class CommentRepositoryTest {
     @Test
     @DisplayName("댓글 저장")
     public void save() throws Exception {
+        // given
         Comment comment = Comment.builder()
                 .content("테스트댓글내용")
                 .build();
@@ -33,8 +34,6 @@ class CommentRepositoryTest {
 
         //then
         Assertions.assertThat(findComment.getContent()).isEqualTo(comment.getContent());
-
-
     }
 
 }

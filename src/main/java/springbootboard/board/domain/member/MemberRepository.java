@@ -1,7 +1,6 @@
-package springbootboard.board.repository;
+package springbootboard.board.domain.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import springbootboard.board.domain.member.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 

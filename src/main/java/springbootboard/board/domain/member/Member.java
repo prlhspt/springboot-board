@@ -5,8 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import springbootboard.board.domain.BaseEntity;
+import springbootboard.board.domain.board.Post;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,6 +41,9 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private Role role;
 
+    @OneToMany(mappedBy = "member")
+    private List<Post> posts = new ArrayList<>();
+
     @Builder
     public Member(String username, String password, String nickname, String email, String loginType, Role role) {
         this.username = username;
@@ -46,12 +52,8 @@ public class Member extends BaseEntity {
         this.email = email;
         this.loginType = loginType;
         this.role = role;
+        this.deleted = false;
     }
-
-    public void changeRole(Role role) {
-        this.role = role;
-    }
-
     @Override
     public String toString() {
         return "Member{" +
