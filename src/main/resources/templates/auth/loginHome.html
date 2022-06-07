@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+
+    <div class="py-4 text-center">
+        <h2>홈 화면</h2>
+    </div>
+
+    <h4 class="m-3" th:text="|${username} 님 안녕하세요|">로그인 사용자 이름</h4>
+
+    <div class="row">
+        <div class="col">
+            <form th:action="@{/auth/logout}" method="post">
+                <button class="w-100 m-1 btn btn-dark btn-lg" th:onclick="|location.href='@{/}'|"
+                        onclick="location.href='home.html'" type="submit">
+                    로그아웃
+                </button>
+            </form>
+
+            <form sec:authorize="hasRole('ROLE_ADMIN')" th:action="@{/admin}">
+                <button class="w-100 m-1 btn btn-danger btn-lg" type="submit">
+                    어드민 페이지
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <hr class="my-4">
+</div>
+
+</body>
+</html>

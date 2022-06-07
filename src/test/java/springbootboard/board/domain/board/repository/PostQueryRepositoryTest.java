@@ -11,6 +11,7 @@ import springbootboard.board.domain.board.dto.CommentResponseDto;
 import springbootboard.board.domain.board.dto.PostListResponseDto;
 import springbootboard.board.domain.board.dto.PostResponseDto;
 import springbootboard.board.domain.board.dto.PostSearchCond;
+import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
@@ -40,7 +41,7 @@ class PostQueryRepositoryTest {
     public Post makePosts() {
 
         Member member = new Member("member1", "1234", "nick1"
-                , "abcd@google.com", "local", Role.USER);
+                , "abcd@google.com", LoginType.LOCAL, Role.USER);
 
         memberRepository.save(member);
 

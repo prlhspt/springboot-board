@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
 import springbootboard.board.domain.board.dto.PostSaveRequestDto;
 import springbootboard.board.domain.board.repository.CommentRepository;
+import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
@@ -28,7 +29,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("댓글의 부모와 자식은 서로 반대편의 id를 가지고 있어야 한다.")
-    public void registerChildComment() throws Exception {
+    public void registerChildComment() {
         //given
         Map<String, Long> idMap = createMemberAndPostAndComment();
         Long commentId1 = commentService.register(
@@ -64,7 +65,7 @@ class CommentServiceTest {
                 .username("username")
                 .password("member1234")
                 .email("member1@gmail.com")
-                .loginType("local")
+                .loginType(LoginType.LOCAL)
                 .nickname("nickname1")
                 .role(Role.USER)
                 .build();

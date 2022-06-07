@@ -31,11 +31,12 @@ public class Member extends BaseEntity {
     @Column(length = 50)
     private String email;
 
-    @Column(name = "login_type", nullable = false, length = 10)
-    private String loginType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "login_type", nullable = false)
+    private LoginType loginType;
 
     @Column(nullable = false)
-    private boolean deleted;
+    private Boolean deleted;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -45,7 +46,7 @@ public class Member extends BaseEntity {
     private List<Post> posts = new ArrayList<>();
 
     @Builder
-    public Member(String username, String password, String nickname, String email, String loginType, Role role) {
+    public Member(String username, String password, String nickname, String email, LoginType loginType, Role role) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;

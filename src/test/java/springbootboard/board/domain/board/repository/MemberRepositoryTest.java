@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
@@ -24,13 +25,13 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("멤버 저장")
-    public void save() throws Exception {
+    public void save() {
         //given
         Member testMember = Member.builder()
                 .username("username")
                 .password("member1234")
                 .email("member1@gmail.com")
-                .loginType("local")
+                .loginType(LoginType.LOCAL)
                 .nickname("member")
                 .role(Role.USER)
                 .build();

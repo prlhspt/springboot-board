@@ -22,7 +22,7 @@ class PostRepositoryTest {
 
     @Test
     @DisplayName("게시글 저장")
-    public void save() throws Exception {
+    public void save() {
         //given
 
         Post post = Post.builder()

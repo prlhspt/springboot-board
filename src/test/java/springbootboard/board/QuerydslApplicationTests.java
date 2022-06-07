@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.Role;
 
@@ -28,7 +29,7 @@ public class QuerydslApplicationTests {
                 .username("username")
                 .password("member1234")
                 .email("member1@gmail.com")
-                .loginType("local")
+                .loginType(LoginType.LOCAL)
                 .nickname("member")
                 .role(Role.USER)
                 .build();

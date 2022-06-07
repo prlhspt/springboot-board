@@ -5,7 +5,7 @@ services:
   db:
     image: mariadb
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - ./db/conf.d:/etc/mysql/conf.d
       - ./db/data:/var/lib/mysql
@@ -13,9 +13,14 @@ services:
     restart: always
     environment:
       TZ: Asia/Seoul
+  cache:
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
 
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8090:8080
+      - "8090:8080"

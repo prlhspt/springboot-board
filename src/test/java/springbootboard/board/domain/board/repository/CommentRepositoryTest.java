@@ -21,7 +21,7 @@ class CommentRepositoryTest {
 
     @Test
     @DisplayName("댓글 저장")
-    public void save() throws Exception {
+    public void save() {
         // given
         Comment comment = Comment.builder()
                 .content("테스트댓글내용")

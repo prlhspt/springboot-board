@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import springbootboard.board.domain.board.dto.*;
 import springbootboard.board.domain.board.repository.PostQueryRepository;
 import springbootboard.board.domain.board.repository.PostRepository;
+import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
@@ -28,7 +29,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 등록")
-    public void post() throws Exception {
+    public void post() {
         //given
         Member member = createMemberAndPostAndComment();
 
@@ -43,7 +44,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("조건 없이 전체 게시글 검색하기")
-    public void findPostListNotCond() throws Exception {
+    public void findPostListNotCond() {
         //given
         createMemberAndPostAndComment();
 
@@ -58,7 +59,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("전체 게시글에서 제목만 검색하기")
-    public void findPostListTitle() throws Exception {
+    public void findPostListTitle() {
         //given
         createMemberAndPostAndComment();
 
@@ -75,8 +76,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("전체 게시글에서 내용만 검색하기")
-    public void
-findPostListContent() throws Exception {
+    public void findPostListContent() {
         //given
         createMemberAndPostAndComment();
 
@@ -92,7 +92,7 @@ findPostListContent() throws Exception {
 
     @Test
     @DisplayName("전체 게시글에서 작성자만 검색하기")
-    public void findPostListWriter() throws Exception {
+    public void findPostListWriter() {
         //given
         createMemberAndPostAndComment();
 
@@ -109,7 +109,7 @@ findPostListContent() throws Exception {
 
     @Test
     @DisplayName("작성자는 정확하게 일치하지 않을 경우 검색되지 않는다")
-    public void findPostListNotEqWriter() throws Exception {
+    public void findPostListNotEqWriter() {
         //given
         createMemberAndPostAndComment();
 
@@ -125,7 +125,7 @@ findPostListContent() throws Exception {
 
     @Test
     @DisplayName("다중 조건 검색하기")
-    public void findPostListTitleAndContentAndWriter() throws Exception {
+    public void findPostListTitleAndContentAndWriter() {
         //given
         createMemberAndPostAndComment();
 
@@ -143,7 +143,7 @@ findPostListContent() throws Exception {
 
     @Test
     @DisplayName("게시글 상세 검색")
-    public void findDetailPost() throws Exception {
+    public void findDetailPost() {
         //given
         createMemberAndPostAndComment();
         Post post = postQueryRepository.findTitleOne("테스트 제목");
@@ -166,7 +166,7 @@ findPostListContent() throws Exception {
                 .username("username")
                 .password("member1234")
                 .email("member1@gmail.com")
-                .loginType("local")
+                .loginType(LoginType.LOCAL)
                 .nickname("nickname1")
                 .role(Role.USER)
                 .build();
