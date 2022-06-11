@@ -39,10 +39,10 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
-    private List<Attachment> attachment = new ArrayList<>();
+    @OneToMany(mappedBy = "post")
+    private List<Attachment> attachments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
