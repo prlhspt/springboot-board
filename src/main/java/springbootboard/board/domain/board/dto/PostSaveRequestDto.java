@@ -4,10 +4,14 @@ import lombok.Builder;
 import lombok.Data;
 import springbootboard.board.domain.board.Post;
 
+import javax.validation.constraints.NotBlank;
+
 @Data
 public class PostSaveRequestDto {
 
+    @NotBlank
     private String title;
+    @NotBlank
     private String content;
 
     @Builder

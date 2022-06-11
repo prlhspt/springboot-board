@@ -5,15 +5,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
-import springbootboard.board.domain.board.dto.PostSaveRequestDto;
-import springbootboard.board.domain.board.repository.CommentRepository;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
+import springbootboard.board.domain.board.dto.CommentResponseDto;
+import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
+import springbootboard.board.domain.board.dto.PostSaveRequestDto;
+import springbootboard.board.domain.board.repository.CommentRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,34 +29,36 @@ class CommentServiceTest {
     @Autowired MemberRepository memberRepository;
     @Autowired PostService postService;
 
+    static String POST_ID = "postId";
+    static String MEMBER_ID = "memberId";
+
     @Test
-    @DisplayName("댓글의 부모와 자식은 서로 반대편의 id를 가지고 있어야 한다.")
+    @DisplayName("계층형 댓글 등록")
     public void registerChildComment() {
-        //given
+        // given
         Map<String, Long> idMap = createMemberAndPostAndComment();
-        Long commentId1 = commentService.register(
-                new CommentSaveRequestDto("테스트 답글1"), idMap.get("postId"),
-                idMap.get("memberId"), idMap.get("commentId"));
 
-        Long commentId2 = commentService.register(
-                new CommentSaveRequestDto("테스트 답글2"), idMap.get("postId"),
-                idMap.get("memberId"), idMap.get("commentId"));
+        // when
+        List<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID));
 
-        //when
-        Comment comment1 = commentRepository.findById(commentId1).orElseThrow(()
-                -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+        // then
+        assertThat(comment.get(0).getChild().size()).isEqualTo(1);
+        assertThat(comment.get(0).getChild().get(0).getChild().size()).isEqualTo(2);
+    }
+    
+    @Test
+    @DisplayName("댓글 삭제")
+    public void deleteComment() {
+        // given
+        Map<String, Long> idMap = createMemberAndPostAndComment();
+        commentService.delete(idMap.get("nestedCommentId3"));
 
-        Comment comment2 = commentRepository.findById(commentId2).orElseThrow(()
-                -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+        // when
+        List<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID));
 
-        Comment parentComment = commentRepository.findById(idMap.get("commentId")).orElseThrow(()
-                -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다."));
+        // then
+        assertThat(comment.get(0).getChild().get(0).getChild().get(1).getContent()).isEqualTo("삭제된 댓글입니다.");
 
-        //then
-        assertThat(parentComment.getChild()).extracting(Comment::getContent).containsExactly("테스트 답글1",
-                "테스트 답글2");
-        assertThat(comment1.getParent().getContent()).isEqualTo("테스트 댓글1");
-        assertThat(comment2.getParent().getContent()).isEqualTo("테스트 댓글1");
     }
 
     private Map<String, Long> createMemberAndPostAndComment() {
@@ -73,15 +77,28 @@ class CommentServiceTest {
         Member member = memberRepository.save(testMember);
 
         PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용");
-        Long postId = postService.post(postSaveRequestDto, member.getId());
+        Long postId = postService.post(postSaveRequestDto, member.getUsername());
 
-        Long commentId = commentService.register(new CommentSaveRequestDto("테스트 댓글1"), postId, member.getId());
+        Long commentId = commentService.register(new CommentSaveRequestDto("테스트 댓글1"), postId, member.getUsername());
 
-        map.put("postId", postId);
-        map.put("memberId", member.getId());
-        map.put("commentId", commentId);
+        Long nestedCommentId1 = commentService.register(
+                new CommentSaveRequestDto("테스트 대댓글 1"), postId,
+                member.getId(), commentId);
+
+        Long nestedCommentId2 = commentService.register(new CommentSaveRequestDto("테스트 대댓글2"), postId,
+                member.getId(), nestedCommentId1);
+
+        Long nestedCommentId3 = commentService.register(new CommentSaveRequestDto("테스트 대댓글3"), postId,
+                member.getId(), nestedCommentId1);
+
+        commentService.register(new CommentSaveRequestDto("테스트 대댓글4"), postId,
+                member.getId(), nestedCommentId2);
+        
+        map.put(POST_ID, postId);
+        map.put(MEMBER_ID, member.getId());
+        map.put("nestedCommentId3", nestedCommentId3);
 
         return map;
     }
-
+    
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<section class="ftco-section">
+  <div class="container mt-3 mb-3">
+
+    <div class="py-4 text-center">
+      <h2>게시판</h2>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-wrap">
+          <table class="table">
+            <thead class="thead-dark">
+            <tr>
+              <th>번호</th>
+              <th>제목</th>
+              <th>작성자</th>
+              <th>작성일</th>
+              <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:onclick="|location.href='@{/post/{id} (id=${post.id})}'|"
+                th:each="post : ${posts}" class="alert" role="alert" style="cursor: pointer;">
+              <td th:text="${post.id}"></td>
+              <td th:text="${post.title}"></td>
+              <td th:text="${post.writer}"></td>
+              <td th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+              <td th:text="${post.view}"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <button class="w-100 mt-3 mb-3 btn btn-secondary btn-lg" th:onclick="|location.href='@{/post/new}'|"
+            onclick="location.href='createPostForm.html'" type="submit">
+      게시글 등록
+    </button>
+
+  </div>
+</section>
+
+</body>
+</html>

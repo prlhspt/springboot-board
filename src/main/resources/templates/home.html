@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/css/bootstrap.min.css}" href="css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -15,6 +15,10 @@
     </div>
 
     <div class="row">
+        <button class="w-100 mb-4 btn btn-secondary btn-lg" th:onclick="|location.href='@{/post}'|"
+                onclick="location.href='home.html'" type="submit">
+            게시판
+        </button>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{/auth/signup}'|">
                 회원 가입

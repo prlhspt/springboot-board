@@ -5,16 +5,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import springbootboard.board.domain.board.Comment;
-import springbootboard.board.domain.board.Post;
-import springbootboard.board.domain.board.dto.CommentResponseDto;
-import springbootboard.board.domain.board.dto.PostListResponseDto;
-import springbootboard.board.domain.board.dto.PostResponseDto;
-import springbootboard.board.domain.board.dto.PostSearchCond;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
+import springbootboard.board.domain.board.Comment;
+import springbootboard.board.domain.board.Post;
+import springbootboard.board.domain.board.dto.PostListResponseDto;
+import springbootboard.board.domain.board.dto.PostResponseDto;
+import springbootboard.board.domain.board.dto.PostSearchCond;
 
 import java.util.List;
 
@@ -25,6 +24,10 @@ class PostQueryRepositoryTest {
 
     @Autowired
     PostQueryRepository postQueryRepository;
+
+    @Autowired
+    CommentQueryRepository commentQueryRepository;
+
     @Autowired
     PostRepository postRepository;
     @Autowired
@@ -111,10 +114,10 @@ class PostQueryRepositoryTest {
         Post post = makePosts();
 
         // when
-        List<CommentResponseDto> result = postQueryRepository.findCommentDto(post.getId());
+        List<Comment> result = commentQueryRepository.findCommentByPostId(post.getId());
 
         // then
-        assertThat(result).extracting(CommentResponseDto::getContent).containsExactly("comment1", "comment2");
+        assertThat(result).extracting(Comment::getContent).containsExactly("comment1", "comment2");
     }
 
 }

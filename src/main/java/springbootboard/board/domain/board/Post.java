@@ -42,7 +42,7 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.PERSIST)
     private List<Attachment> attachment = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     @Builder
@@ -61,5 +61,13 @@ public class Post extends BaseEntity {
     public void addComments(Comment comment) {
         comments.add(comment);
         comment.setPost(this);
+    }
+
+    public void addViewCount() {
+        this.view++;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }

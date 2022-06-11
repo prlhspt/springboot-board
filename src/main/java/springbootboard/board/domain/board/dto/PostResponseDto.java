@@ -9,21 +9,21 @@ import java.util.List;
 @Data
 public class PostResponseDto {
 
+    private Long id;
     private String title;
     private String content;
     private String writer;
     private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
     private Long view;
     private List<CommentResponseDto> comment;
 
     @QueryProjection
-    public PostResponseDto(String title, String content, String writer, LocalDateTime createdDate, LocalDateTime modifiedDate, Long view) {
+    public PostResponseDto(Long id, String title, String content, String writer, LocalDateTime createdDate, Long view) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
         this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
         this.view = view;
     }
 }

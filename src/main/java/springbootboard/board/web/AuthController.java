@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import springbootboard.board.web.dto.MemberLoginDto;
 import springbootboard.board.web.dto.MemberSaveDto;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -43,12 +44,16 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto) {
+    public String loginForm(@ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto,
+                            HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        request.getSession().setAttribute("prevPage", referrer);
+
         return "auth/login";
     }
 
     @PostMapping("/login")
-    public void login(@Valid @ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto) {
+    public void login(@ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto) {
     }
 
 }

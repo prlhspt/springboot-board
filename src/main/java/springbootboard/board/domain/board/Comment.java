@@ -67,4 +67,8 @@ public class Comment extends BaseEntity {
         this.child.add(child);
         child.setParent(this);
     }
+
+    public void delete() {
+        this.deleted = true;
+    }
 }

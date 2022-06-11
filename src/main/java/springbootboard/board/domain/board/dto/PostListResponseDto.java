@@ -8,18 +8,18 @@ import java.time.LocalDateTime;
 @Data
 public class PostListResponseDto {
 
+    private Long id;
     private String title;
     private String writer;
     private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
     private Long view;
 
     @QueryProjection
-    public PostListResponseDto(String title, String writer, LocalDateTime createdDate, LocalDateTime modifiedDate, Long view) {
+    public PostListResponseDto(Long id, String title, String writer, LocalDateTime createdDate, Long view) {
+        this.id = id;
         this.title = title;
         this.writer = writer;
         this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
         this.view = view;
     }
 }
