@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import springbootboard.board.config.auth.LoginUser;
 import springbootboard.board.config.auth.dto.SessionUser;
 import springbootboard.board.domain.board.CommentService;
@@ -58,31 +57,12 @@ public class PostController {
         postService.addViewCount(postId);
 
         PostResponseDto detailPost = postService.findDetailPost(postId);
-        List<CommentResponseDto> comment = commentService.findComment(postId);
-
-        System.out.println("PostController.detailPost");
-        detailPost.setComment(comment);
+        List<CommentResponseDto> comments = commentService.findComment(postId);
 
         model.addAttribute("detailPost", detailPost);
+        model.addAttribute("comments", comments);
 
         return "post/detailPost";
     }
-
-    @PostMapping("/comment/{postId}/new")
-    public String createComment(@PathVariable("postId") Long postId,
-                                @Valid @ModelAttribute("commentSaveRequestDto") CommentSaveRequestDto commentSaveRequestDto,
-                                RedirectAttributes redirectAttributes,
-                                @LoginUser SessionUser user) {
-        commentService.register(commentSaveRequestDto, postId, user.getName());
-        redirectAttributes.addAttribute("postId", postId);
-
-        return "redirect:/post/{postId}";
-
-    }
-
-//    @PostMapping("/comment/{postId}/{commentId}/new")
-//    public String createChildComment() {
-//
-//    }
 
 }

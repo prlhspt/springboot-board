@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/commentTable.scss}" href="/css/commentTable.scss" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/commentTable.js}" defer></script>
 </head>
 
 <body>
@@ -14,11 +16,13 @@
     <tbody>
     <tr>
         <th class="active">작성자</th>
-        <td th:text="*{detailPost.writer}"/></td>
+        <td th:text="*{detailPost.writer}"/>
+        </td>
     </tr>
     <tr>
         <th class="active">제목</th>
-        <td th:text="*{detailPost.title}"/></td>
+        <td th:text="*{detailPost.title}"/>
+        </td>
     </tr>
     <tr>
         <th class="active">작성일</th>
@@ -32,50 +36,136 @@
 </table>
 
 <div class="container m-5">
-    <p th:text="*{detailPost.content}"></p>
-</div>
+    <div class="container">
+        <div class="col-md-12">
+            <table class="table caption-top table-responsive text-center">
+                <caption>댓글</caption>
+                <thead>
+                <tr>
+                    <th>아이디테스트중</th>
+                    <th>답글 여부</th>
+                    <th scope="col">댓글 대상</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">내용</th>
+                    <th scope="col">작성일</th>
+                </tr>
+                </thead>
+                <tbody th:each="comment, stat : ${comments}">
+                    <tr>
+                        <td th:text="${comment.id}"></td>
+                        <td></td>
+                        <td></td>
+                        <td th:text="${comment.writer}"></td>
+                        <td th:text="${comment.content}"></td>
+                        <td th:text="${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <button th:if="${comment.username != null}"
+                                    th:attr="data-target='#collapse_comment'+${stat.index}"
+                                    class="btn btn-secondary btn-sm"
+                                    data-toggle="collapse"
+                                    data-text="Collapse">
+                                답글
+                            </button>
+                            <div th:id="'collapse_comment'+${stat.index}" class="block collapse">
+                                <div class="block__content">
 
-<div class="container m-5">
-    <h3 class="py-4">댓글</h3>
+                                    <div sec:authorize="isAnonymous()" class="pt-4">댓글은 로그인 후 작성하실 수 있습니다.</div>
+                                    <form sec:authorize="isAuthenticated()"
+                                          th:action="@{/comment/{postId}/{commentId}/new (postId=${detailPost.id},
+                                          commentId=${comment.id})}"
+                                          th:object="${commentSaveRequestDto}" method="post">
+                                        <div class="form-group mb-3 mt-3">
+                                            <textarea class="form-control" th:field="*{content}" rows="3"
+                                                      th:errorclass="field-error"></textarea>
+                                            <div class="field-error" th:errors="*{content}"/>
+                                        </div>
 
-    <div class="table-wrap">
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th>내용</th>
-                <th>작성자</th>
-                <th>작성일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="comment : ${detailPost.comment}" class="alert" role="alert">
-                <td th:text="${comment.content}"></td>
-                <td th:text="${comment.writer}"></td>
-                <td th:text="${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                                        <hr class="my-4">
 
-    <h5 sec:authorize="isAnonymous()" class="pt-4">댓글은 로그인 후 작성하실 수 있습니다.</h5>
-    <button sec:authorize="isAnonymous()" class="w-100 btn btn-secondary btn-lg" onclick="location.href='auth/login.html'"
-            th:onclick="|location.href='@{/auth/login}'|" type="button">로그인</button>
+                                        <button class="w-100 btn btn-primary btn-lg" type="submit">댓글 등록</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${#authentication.name} == ${comment.username}">
+                            <form th:action="@{/comment/{postId}/{commentId} (postId=${detailPost.id},
+                                          commentId=${comment.id})}"
+                                  th:object="${commentSaveRequestDto}" th:method="delete">
+                                <button class="btn btn-danger btn-sm" type="submit">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
 
-    <form sec:authorize="isAuthenticated()" th:action="@{/post/comment/{id}/new (id=${detailPost.id})}" th:object="${commentSaveRequestDto}" method="post">
-        <div class="form-group mb-3 mt-3">
-            <textarea class="form-control" th:field="*{content}" rows="10" th:errorclass="field-error"></textarea>
-            <div class="field-error" th:errors="*{content}" />
+                    <tr th:if="${comment.child.size() != 0}" th:each="child, stat : ${comment.child}" class="p-5">
+                        <td th:text="${child.id}"></td>
+                        <td>----></td>
+                        <td th:if="${child.parentWriter == null}"></td>
+                        <td th:if="${child.parentWriter != null}" th:text="'@'+${child.parentWriter}"></td>
+                        <td th:text="${child.writer}"></td>
+                        <td th:text="${child.content}"></td>
+                        <td th:text="${#temporals.format(child.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                        <td>
+                            <button th:if="${child.username != null}"
+                                    th:attr="data-target='#collapse_child'+${stat.index}"
+                                    class="btn btn-secondary btn-sm"
+                                    data-toggle="collapse"
+                                    data-text="Collapse">
+                                답글
+                            </button>
+                            <div th:id="'collapse_child'+${stat.index}" class="block collapse">
+                                <div class="block__content">
+
+                                    <div sec:authorize="isAnonymous()" class="pt-4">댓글은 로그인 후 작성하실 수 있습니다.</div>
+                                    <form sec:authorize="isAuthenticated()"
+                                          th:action="@{/comment/{postId}/{commentId}/new (postId=${detailPost.id},
+                                          commentId=${child.id})}"
+                                          th:object="${commentSaveRequestDto}" method="post">
+                                        <div class="form-group mb-3 mt-3">
+                                            <textarea class="form-control" th:field="*{content}" rows="3"
+                                                      th:errorclass="field-error"></textarea>
+                                            <div class="field-error" th:errors="*{content}"/>
+                                        </div>
+
+                                        <hr class="my-4">
+
+                                        <button class="w-100 btn btn-primary btn-lg" type="submit">댓글 등록</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                        <td th:if="${#authentication.name} == ${child.username}">
+                            <form th:action="@{/comment/{postId}/{commentId} (postId=${detailPost.id},
+                                          commentId=${child.id})}"
+                                  th:object="${commentSaveRequestDto}" th:method="delete">
+                                <button class="btn btn-danger btn-sm" type="submit">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
 
-        <hr class="my-4">
 
-        <button class="w-100 btn btn-primary btn-lg" type="submit">댓글 등록</button>
+        <h5 sec:authorize="isAnonymous()" class="pt-4">댓글은 로그인 후 작성하실 수 있습니다.</h5>
+        <button sec:authorize="isAnonymous()" class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='auth/login.html'"
+                th:onclick="|location.href='@{/auth/login}'|" type="button">로그인
+        </button>
 
-    </form>
+        <form sec:authorize="isAuthenticated()" th:action="@{/comment/{postId}/new (postId=${detailPost.id})}"
+              th:object="${commentSaveRequestDto}" method="post">
+            <div class="form-group mb-3 mt-3">
+                    <textarea class="form-control" th:field="*{content}" rows="10"
+                              th:errorclass="field-error"></textarea>
+                <div class="field-error" th:errors="*{content}"/>
+            </div>
 
+            <hr class="my-4">
 
+            <button class="w-100 btn btn-primary btn-lg" type="submit">댓글 등록</button>
+        </form>
+    </div>
 </div>
-
-
 </body>
 </html>

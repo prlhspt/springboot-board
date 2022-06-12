@@ -83,16 +83,16 @@ class CommentServiceTest {
 
         Long nestedCommentId1 = commentService.register(
                 new CommentSaveRequestDto("테스트 대댓글 1"), postId,
-                member.getId(), commentId);
+                member.getUsername(), commentId);
 
         Long nestedCommentId2 = commentService.register(new CommentSaveRequestDto("테스트 대댓글2"), postId,
-                member.getId(), nestedCommentId1);
+                member.getUsername(), nestedCommentId1);
 
         Long nestedCommentId3 = commentService.register(new CommentSaveRequestDto("테스트 대댓글3"), postId,
-                member.getId(), nestedCommentId1);
+                member.getUsername(), nestedCommentId1);
 
         commentService.register(new CommentSaveRequestDto("테스트 대댓글4"), postId,
-                member.getId(), nestedCommentId2);
+                member.getUsername(), nestedCommentId2);
         
         map.put(POST_ID, postId);
         map.put(MEMBER_ID, member.getId());
