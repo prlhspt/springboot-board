@@ -3,13 +3,13 @@ package springbootboard.board.domain.board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springbootboard.board.domain.member.Member;
-import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.board.dto.CommentResponseDto;
 import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
 import springbootboard.board.domain.board.repository.CommentQueryRepository;
 import springbootboard.board.domain.board.repository.CommentRepository;
 import springbootboard.board.domain.board.repository.PostRepository;
+import springbootboard.board.domain.member.Member;
+import springbootboard.board.domain.member.MemberRepository;
 
 import java.util.ArrayList;
 import java.util.List;

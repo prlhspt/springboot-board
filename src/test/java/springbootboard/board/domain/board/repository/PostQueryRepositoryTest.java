@@ -64,13 +64,6 @@ class PostQueryRepositoryTest {
         Comment comment4 = new Comment("comment4", member, post2);
         Comment comment5 = new Comment("comment5", member, post2);
 
-        post1.addComments(comment1);
-        post1.addComments(comment2);
-
-        post2.addComments(comment3);
-        post2.addComments(comment4);
-        post2.addComments(comment5);
-
         commentRepository.save(comment1);
         commentRepository.save(comment2);
 

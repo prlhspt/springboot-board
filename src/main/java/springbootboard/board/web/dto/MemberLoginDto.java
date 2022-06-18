@@ -3,8 +3,6 @@ package springbootboard.board.web.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-
 @Data
 public class MemberLoginDto {
     private String username;

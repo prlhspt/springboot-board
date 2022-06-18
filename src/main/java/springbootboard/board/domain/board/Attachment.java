@@ -19,16 +19,18 @@ public class Attachment extends BaseEntity {
     @Column(name = "attachment_id")
     private Long id;
 
-    @Column(name = "store_path", nullable = false)
-    private String storePath;
+    @Column(name = "store_file_path", nullable = false)
+    private String storeFilePath;
 
-    @Column(name = "store_name", nullable = false)
-    private String storeName;
+    @Column(name = "store_file_name", nullable = false)
+    private String storeFileName;
 
-    @Column(name = "original_name", nullable = false)
-    private String originalName;
+    @Column(name = "upload_file_name", nullable = false)
+    private String uploadFileName;
 
-    private String extension;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "file_type", nullable = false)
+    private FileType fileType;
 
     @Column(nullable = false)
     private Long size;
@@ -37,12 +39,18 @@ public class Attachment extends BaseEntity {
     private Post post;
 
     @Builder
-    public Attachment(String storePath, String storeName, String originalName, String extension, Long size, Post post) {
-        this.storePath = storePath;
-        this.storeName = storeName;
-        this.originalName = originalName;
-        this.extension = extension;
+    public Attachment(Long id, String storeFilePath, String storeFileName, String uploadFileName, FileType fileType, Long size, Post post) {
+        this.id = id;
+        this.storeFilePath = storeFilePath;
+        this.storeFileName = storeFileName;
+        this.uploadFileName = uploadFileName;
+        this.fileType = fileType;
         this.size = size;
         this.post = post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+        post.getAttachments().add(this);
     }
 }

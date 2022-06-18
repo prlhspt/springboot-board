@@ -1,0 +1,35 @@
+#accordion {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+p {
+  margin: 10px;
+}
+
+.menu {
+  border: 1px solid #008080;
+  border-bottom: none;
+}
+
+.menu:last-child {
+  border-bottom: 1px solid #808080;
+}
+.header {
+  display: flex;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.title {
+  flex: 1;
+}
+
+.icon {
+  width: 20px;
+}
+
+.content {
+  display:none;
+  padding:10px;
+}

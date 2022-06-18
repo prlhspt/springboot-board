@@ -2,7 +2,6 @@ package springbootboard.board.web;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.data.ConditionalOnRepositoryType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,6 @@ import springbootboard.board.config.auth.dto.SessionUser;
 import springbootboard.board.domain.board.Comment;
 import springbootboard.board.domain.board.CommentService;
 import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
-import springbootboard.board.domain.board.repository.CommentRepository;
 
 import javax.validation.Valid;
 

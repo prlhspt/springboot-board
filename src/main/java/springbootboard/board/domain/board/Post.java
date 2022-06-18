@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.FetchType.LAZY;
 
 @Getter
@@ -39,11 +40,8 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = PERSIST)
     private List<Attachment> attachments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments = new ArrayList<>();
 
     @Builder
     public Post(String title, String content) {
@@ -58,9 +56,9 @@ public class Post extends BaseEntity {
         member.getPosts().add(this);
     }
 
-    public void addComments(Comment comment) {
-        comments.add(comment);
-        comment.setPost(this);
+    public void addAttachment(Attachment attachment) {
+        attachments.add(attachment);
+        attachment.setPost(this);
     }
 
     public void addViewCount() {
@@ -70,4 +68,5 @@ public class Post extends BaseEntity {
     public void delete() {
         this.deleted = true;
     }
+
 }

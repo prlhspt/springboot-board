@@ -14,9 +14,14 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String writer;
+
     private LocalDateTime createdDate;
     private Long view;
-    private List<CommentResponseDto> comment = new ArrayList<>();
+
+    private List<CommentResponseDto> comments = new ArrayList<>();
+
+    private List<AttachmentResponseDto> imageFiles = new ArrayList<>();
+    private AttachmentResponseDto attachFile;
 
     @QueryProjection
     public PostResponseDto(Long id, String title, String content, String writer, LocalDateTime createdDate, Long view) {

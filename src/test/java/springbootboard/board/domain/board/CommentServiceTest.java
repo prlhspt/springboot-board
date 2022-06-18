@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
@@ -14,6 +16,8 @@ import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
 import springbootboard.board.domain.board.dto.PostSaveRequestDto;
 import springbootboard.board.domain.board.repository.CommentRepository;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +38,7 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("계층형 댓글 등록")
-    public void registerChildComment() {
+    public void registerChildComment() throws IOException {
         // given
         Map<String, Long> idMap = createMemberAndPostAndComment();
 
@@ -42,13 +46,12 @@ class CommentServiceTest {
         List<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID));
 
         // then
-        assertThat(comment.get(0).getChild().size()).isEqualTo(1);
-        assertThat(comment.get(0).getChild().get(0).getChild().size()).isEqualTo(2);
+        assertThat(comment.get(0).getChild().size()).isEqualTo(4);
     }
     
     @Test
     @DisplayName("댓글 삭제")
-    public void deleteComment() {
+    public void deleteComment() throws IOException {
         // given
         Map<String, Long> idMap = createMemberAndPostAndComment();
         commentService.delete(idMap.get("nestedCommentId3"));
@@ -57,11 +60,11 @@ class CommentServiceTest {
         List<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID));
 
         // then
-        assertThat(comment.get(0).getChild().get(0).getChild().get(1).getContent()).isEqualTo("삭제된 댓글입니다.");
+        assertThat(comment.get(0).getChild().get(2).getContent()).isEqualTo("삭제된 댓글입니다.");
 
     }
 
-    private Map<String, Long> createMemberAndPostAndComment() {
+    private Map<String, Long> createMemberAndPostAndComment() throws IOException {
 
         Map<String, Long> map = new HashMap<>();
 
@@ -76,7 +79,11 @@ class CommentServiceTest {
 
         Member member = memberRepository.save(testMember);
 
-        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용");
+        MultipartFile mockMultipartFile = new MockMultipartFile("test", new byte[]{});
+        List<MultipartFile> mockMultipartFiles = new ArrayList<>();
+        mockMultipartFiles.add(mockMultipartFile);
+
+        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", mockMultipartFile, mockMultipartFiles);
         Long postId = postService.post(postSaveRequestDto, member.getUsername());
 
         Long commentId = commentService.register(new CommentSaveRequestDto("테스트 댓글1"), postId, member.getUsername());
@@ -100,5 +107,4 @@ class CommentServiceTest {
 
         return map;
     }
-    
 }

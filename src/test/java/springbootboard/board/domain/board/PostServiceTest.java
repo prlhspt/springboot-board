@@ -4,7 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
@@ -13,6 +15,8 @@ import springbootboard.board.domain.board.dto.*;
 import springbootboard.board.domain.board.repository.PostQueryRepository;
 import springbootboard.board.domain.board.repository.PostRepository;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +41,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 등록")
-    public void post() {
+    public void post() throws IOException {
         //given
         Map<String, Long> idMap = createMemberAndPost();
 
@@ -52,7 +56,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("조건 없이 전체 게시글 검색하기")
-    public void findPostListNotCond() {
+    public void findPostListNotCond() throws IOException {
         //given
         createMemberAndPost();
 
@@ -67,7 +71,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("전체 게시글에서 제목만 검색하기")
-    public void findPostListTitle() {
+    public void findPostListTitle() throws IOException {
         //given
         createMemberAndPost();
 
@@ -84,7 +88,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("전체 게시글에서 내용만 검색하기")
-    public void findPostListContent() {
+    public void findPostListContent() throws IOException {
         //given
         createMemberAndPost();
 
@@ -100,7 +104,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("전체 게시글에서 작성자만 검색하기")
-    public void findPostListWriter() {
+    public void findPostListWriter() throws IOException {
         //given
         createMemberAndPost();
 
@@ -117,7 +121,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("작성자 틀리게 검색하기")
-    public void findPostListNotEqWriter() {
+    public void findPostListNotEqWriter() throws IOException {
         //given
         createMemberAndPost();
 
@@ -133,7 +137,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("다중 조건 검색하기")
-    public void findPostListTitleAndContentAndWriter() {
+    public void findPostListTitleAndContentAndWriter() throws IOException {
         //given
         createMemberAndPost();
 
@@ -151,7 +155,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 상세 검색")
-    public void findDetailPost() {
+    public void findDetailPost() throws IOException {
         //given
         Map<String, Long> idMap = createMemberAndPost();
         //when
@@ -163,7 +167,7 @@ class PostServiceTest {
 
     @Test
     @DisplayName("게시글 삭제")
-    public void deletePost() {
+    public void deletePost() throws IOException {
         //given
         Map<String, Long> idMap = createMemberAndPost();
         postService.delete(idMap.get(POST_ID));
@@ -173,7 +177,7 @@ class PostServiceTest {
                 postService.findDetailPost(idMap.get(POST_ID)));
     }
 
-    private Map<String, Long> createMemberAndPost() {
+    private Map<String, Long> createMemberAndPost() throws IOException {
 
         Map<String, Long> map = new HashMap<>();
 
@@ -188,9 +192,13 @@ class PostServiceTest {
 
         Member member = memberRepository.save(testMember);
 
-        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용");
-        PostSaveRequestDto postSaveRequestDto2 = new PostSaveRequestDto("테스트 제목2", "테스트");
-        PostSaveRequestDto postSaveRequestDto3 = new PostSaveRequestDto("제목", "테스트 내용2");
+        MultipartFile multipartFile = new MockMultipartFile("test", new byte[]{});
+        ArrayList<MultipartFile> multipartFiles = new ArrayList<>();
+        multipartFiles.add(multipartFile);
+
+        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", multipartFile, multipartFiles);
+        PostSaveRequestDto postSaveRequestDto2 = new PostSaveRequestDto("테스트 제목2", "테스트", multipartFile, multipartFiles);
+        PostSaveRequestDto postSaveRequestDto3 = new PostSaveRequestDto("제목", "테스트 내용2", multipartFile, multipartFiles);
         Long postId = postService.post(postSaveRequestDto, member.getUsername());
         postService.post(postSaveRequestDto2, member.getUsername());
         postService.post(postSaveRequestDto3, member.getUsername());

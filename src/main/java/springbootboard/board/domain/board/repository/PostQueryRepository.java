@@ -10,8 +10,8 @@ import springbootboard.board.domain.board.dto.*;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static springbootboard.board.domain.member.QMember.member;
 import static springbootboard.board.domain.board.QPost.post;
+import static springbootboard.board.domain.member.QMember.member;
 
 @RequiredArgsConstructor
 @Repository
@@ -30,7 +30,7 @@ public class PostQueryRepository {
 
     public List<PostListResponseDto> findPostListDto(PostSearchCond cond) {
         return queryFactory.select(new QPostListResponseDto(post.id, post.title, post.member.nickname
-                ,post.createdDate, post.view))
+                        , post.createdDate, post.view))
                 .from(post)
                 .join(post.member, member)
                 .where(titleAndContentContainsAndWriterEq(cond.getTitle(), cond.getContent(), cond.getWriter())

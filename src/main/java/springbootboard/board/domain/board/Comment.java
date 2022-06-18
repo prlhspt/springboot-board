@@ -52,7 +52,6 @@ public class Comment extends BaseEntity {
 
     public void setPost(Post post) {
         this.post = post;
-        post.getComments().add(this);
     }
 
     public void setMember(Member member) {

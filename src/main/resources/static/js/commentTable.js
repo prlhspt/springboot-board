@@ -1,25 +1,14 @@
+const headers = document.getElementsByClassName("header");
+const contents = document.getElementsByClassName("content");
 
-// Handler that uses various data-* attributes to trigger
-// specific actions, mimicing bootstraps attributes
-const triggers = Array.from(document.querySelectorAll('[data-toggle="collapse"]'));
-
-window.addEventListener('click', (ev) => {
-    const elm = ev.target;
-    if (triggers.includes(elm)) {
-        const selector = elm.getAttribute('data-target');
-        collapse(selector, 'toggle');
-    }
-}, false);
-
-
-const fnmap = {
-    'toggle': 'toggle',
-    'show': 'add',
-    'hide': 'remove'
-};
-const collapse = (selector, cmd) => {
-    const targets = Array.from(document.querySelectorAll(selector));
-    targets.forEach(target => {
-        target.classList[fnmap[cmd]]('show');
+for (let i = 0; i < headers.length; i++) {
+    headers[i].addEventListener("click", () => {
+        for (let j = 0; j < contents.length; j++) {
+            if (i == j) {
+                contents[j].style.display = contents[j].style.display == "block" ? "none" : "block";
+            } else {
+                contents[j].style.display = "none";
+            }
+        }
     });
 }
