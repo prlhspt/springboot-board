@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,7 +52,7 @@ class PostServiceTest {
 
         //then
         assertThat(result.get(0).getMember().getId()).isEqualTo(idMap.get(MEMBER_ID));
-        assertThat(result).extracting(Post::getTitle).containsExactly("테스트 제목", "테스트 제목2", "제목");
+        assertThat(result).extracting(Post::getTitle).containsExactly("제목", "테스트 제목2", "테스트 제목");
 
     }
 
@@ -61,7 +63,7 @@ class PostServiceTest {
         createMemberAndPost();
 
         //when
-        List<PostListResponseDto> result = postService.findPostList(new PostSearchCond());
+        Page<PostListResponseDto> result = postService.findPostList(new PostSearchCond(), Pageable.ofSize(10));
 
         //then
         assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("테스트 제목",
@@ -79,7 +81,7 @@ class PostServiceTest {
         PostSearchCond cond = new PostSearchCond();
         cond.setTitle("테스트 제목");
 
-        List<PostListResponseDto> result = postService.findPostList(cond);
+        Page<PostListResponseDto> result = postService.findPostList(cond, Pageable.ofSize(10));
 
         //then
         assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("테스트 제목", "테스트 제목2");
@@ -96,7 +98,7 @@ class PostServiceTest {
         PostSearchCond cond = new PostSearchCond();
         cond.setContent("테스트 내용");
 
-        List<PostListResponseDto> result = postService.findPostList(cond);
+        Page<PostListResponseDto> result = postService.findPostList(cond, Pageable.ofSize(10));
 
         //then
         assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("테스트 제목", "제목");
@@ -112,7 +114,7 @@ class PostServiceTest {
         PostSearchCond cond = new PostSearchCond();
         cond.setWriter("nickname1");
 
-        List<PostListResponseDto> result = postService.findPostList(cond);
+        Page<PostListResponseDto> result = postService.findPostList(cond, Pageable.ofSize(10));
 
         //then
         assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("테스트 제목",
@@ -129,7 +131,7 @@ class PostServiceTest {
         PostSearchCond cond = new PostSearchCond();
         cond.setWriter("nick");
 
-        List<PostListResponseDto> result = postService.findPostList(cond);
+        Page<PostListResponseDto> result = postService.findPostList(cond, Pageable.ofSize(10));
 
         //then
         assertThat(result).isEmpty();
@@ -147,7 +149,7 @@ class PostServiceTest {
         cond.setContent("내용");
         cond.setWriter("nickname1");
 
-        List<PostListResponseDto> result = postService.findPostList(cond);
+        Page<PostListResponseDto> result = postService.findPostList(cond, Pageable.ofSize(10));
 
         //then
         assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("테스트 제목");
@@ -196,12 +198,12 @@ class PostServiceTest {
         ArrayList<MultipartFile> multipartFiles = new ArrayList<>();
         multipartFiles.add(multipartFile);
 
-        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", multipartFile, multipartFiles);
-        PostSaveRequestDto postSaveRequestDto2 = new PostSaveRequestDto("테스트 제목2", "테스트", multipartFile, multipartFiles);
         PostSaveRequestDto postSaveRequestDto3 = new PostSaveRequestDto("제목", "테스트 내용2", multipartFile, multipartFiles);
-        Long postId = postService.post(postSaveRequestDto, member.getUsername());
-        postService.post(postSaveRequestDto2, member.getUsername());
+        PostSaveRequestDto postSaveRequestDto2 = new PostSaveRequestDto("테스트 제목2", "테스트", multipartFile, multipartFiles);
+        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", multipartFile, multipartFiles);
         postService.post(postSaveRequestDto3, member.getUsername());
+        postService.post(postSaveRequestDto2, member.getUsername());
+        Long postId = postService.post(postSaveRequestDto, member.getUsername());
 
         map.put(POST_ID, postId);
         map.put(MEMBER_ID, member.getId());

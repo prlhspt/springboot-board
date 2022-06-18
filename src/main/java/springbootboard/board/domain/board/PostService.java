@@ -1,6 +1,9 @@
 package springbootboard.board.domain.board;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springbootboard.board.domain.board.dto.*;
@@ -67,8 +70,11 @@ public class PostService {
         post.addViewCount();
     }
 
-    public List<PostListResponseDto> findPostList(PostSearchCond cond) {
-        return postQueryRepository.findPostListDto(cond);
+    public Page<PostListResponseDto> findPostList(PostSearchCond cond, Pageable pageable) {
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, pageable.getPageSize(), pageable.getSort());
+
+        return postQueryRepository.findPostListDto(cond, pageable);
     }
 
     public PostResponseDto findDetailPost(Long postId) {

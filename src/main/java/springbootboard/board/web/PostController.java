@@ -4,6 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -39,9 +43,9 @@ public class PostController {
     private final FileStore fileStore;
 
     @GetMapping
-    public String home(Model model) {
+    public String readBoard(Model model, @PageableDefault Pageable pageable) {
         PostSearchCond cond = new PostSearchCond();
-        List<PostListResponseDto> posts = postService.findPostList(cond);
+        Page<PostListResponseDto> posts = postService.findPostList(cond, pageable);
         model.addAttribute("posts", posts);
         return "post/home";
     }

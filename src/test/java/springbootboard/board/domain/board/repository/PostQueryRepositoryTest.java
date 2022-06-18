@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
@@ -81,11 +83,11 @@ class PostQueryRepositoryTest {
         makePosts();
 
         // when
-        List<PostListResponseDto> result = postQueryRepository.findPostListDto(new PostSearchCond());
+        Page<PostListResponseDto> result = postQueryRepository.findPostListDto(new PostSearchCond(), Pageable.ofSize(10));
 
         // then
 
-        assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("title1", "title2");
+        assertThat(result).extracting(PostListResponseDto::getTitle).containsExactly("title2", "title1");
     }
 
     @Test

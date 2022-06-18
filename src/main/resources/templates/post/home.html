@@ -2,53 +2,81 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="UTF-8">
-  <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/pagination.css}" href="/css/pagination.css" rel="stylesheet">
 </head>
 
 <body>
-<section class="ftco-section">
-  <div class="container mt-3 mb-3">
+<div class="container mt-3 mb-3">
 
     <div class="py-4 text-center">
-      <h2>게시판</h2>
+        <h2>게시판</h2>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <div class="table-wrap">
-          <table class="table">
-            <thead class="thead-dark">
-            <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>작성자</th>
-              <th>작성일</th>
-              <th>조회수</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:onclick="|location.href='@{/post/{id} (id=${post.id})}'|"
-                th:each="post : ${posts}" class="alert" role="alert" style="cursor: pointer;">
-              <td th:text="${post.id}"></td>
-              <td th:text="${post.title}"></td>
-              <td th:text="${post.writer}"></td>
-              <td th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
-              <td th:text="${post.view}"></td>
-            </tr>
-            </tbody>
-          </table>
+
+        <button class="w-25 m-3 btn btn-secondary me-auto" th:onclick="|location.href='@{/post/new}'|"
+                onclick="location.href='createPostForm.html'" type="submit">
+            게시글 등록
+        </button>
+
+        <div class="col-md-12">
+            <div class="table-wrap">
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:onclick="|location.href='@{/post/{id} (id=${post.id})}'|"
+                        th:each="post : ${posts}" class="alert" role="alert" style="cursor: pointer;">
+                        <td th:text="${post.id}"></td>
+                        <td th:text="${post.title}"></td>
+                        <td th:text="${post.writer}"></td>
+                        <td th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${post.view}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
     </div>
 
-    <button class="w-100 mt-3 mb-3 btn btn-secondary btn-lg" th:onclick="|location.href='@{/post/new}'|"
-            onclick="location.href='createPostForm.html'" type="submit">
-      게시글 등록
-    </button>
+    <br>
+    <nav class="center">
+        <ul class="pagination"
+            th:with="currentNumber=${posts.number},
+            start=(${posts.number < 4 ? 0 : posts.number - 4}), last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
 
-  </div>
-</section>
+            <a th:href="@{/post(page=1)}" aria-label="First">
+                <span aria-hidden="true">&lt;&lt;</span>
+            </a>
 
+            <a th:class="${posts.first} ? 'disabled'" th:href="${posts.first} ? '#' :@{/post(page=${posts.number})}"
+               aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+
+            <a th:each="page: ${#numbers.sequence(start+1, last)}" th:class="${page == posts.number+1} ? 'active'"
+               th:text="${page}" th:href="@{/post(page=${page})}"></a>
+
+            <a th:class="${posts.last} ? 'disabled'" th:href="${posts.last} ? '#' : @{/post(page=${posts.number + 2})}"
+               aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+
+            <a th:href="@{/post(page=${posts.totalPages})}" aria-label="Last">
+                <span aria-hidden="true">&gt;&gt;</span>
+            </a>
+
+        </ul>
+    </nav>
+</div>
 </body>
 </html>
