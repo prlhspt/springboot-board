@@ -23,6 +23,7 @@ import springbootboard.board.domain.board.FileType;
 import springbootboard.board.domain.board.PostService;
 import springbootboard.board.domain.board.dto.*;
 import springbootboard.board.util.FileStore;
+import springbootboard.board.web.dto.SearchRequestDto;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -42,10 +43,28 @@ public class PostController {
     private final FileStore fileStore;
 
     @GetMapping
-    public String readBoard(Model model, @PageableDefault Pageable pageable) {
+    public String readBoard(Model model, @PageableDefault Pageable pageable,
+                            @ModelAttribute("searchRequestDto") SearchRequestDto searchRequestDto,
+                            @RequestParam(value = "page", required = false) String page) {
+
         PostSearchCond cond = new PostSearchCond();
+
+        if (searchRequestDto.getSearchType() != null && searchRequestDto.getKeyword() != null) {
+            if (searchRequestDto.getSearchType().equals("title")) {
+                cond.setTitle(searchRequestDto.getKeyword());
+            }
+            if (searchRequestDto.getSearchType().equals("content")) {
+                cond.setContent(searchRequestDto.getKeyword());
+            }
+            if (searchRequestDto.getSearchType().equals("writer")) {
+                cond.setWriter(searchRequestDto.getKeyword());
+            }
+        }
+
         Page<PostListResponseDto> posts = postService.findPostList(cond, pageable);
         model.addAttribute("posts", posts);
+        model.addAttribute("page", page);
+        model.addAttribute("searchRequestDto", searchRequestDto);
         return "post/home";
     }
 

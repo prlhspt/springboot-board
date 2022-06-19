@@ -51,34 +51,53 @@
     </div>
 
     <br>
-    <nav class="center">
+    <nav th:object="${searchRequestDto}" class="center">
         <ul class="pagination"
-            th:with="currentNumber=${posts.number},
-            start=(${posts.number < 4 ? 0 : posts.number - 4}), last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages == 0 ? 1 : posts.totalPages})">
+            th:with="start=(${posts.number < 4 ? 0 : posts.number - 4}), last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages == 0 ? 1 : posts.totalPages})">
 
-            <a th:href="@{/post(page=1)}" aria-label="First">
+            <a th:href="@{/post(page=1, searchType=${searchRequestDto.searchType}, keyword=${searchRequestDto.keyword})}" aria-label="First">
                 <span aria-hidden="true">&lt;&lt;</span>
             </a>
 
-            <a th:class="${posts.first} ? 'disabled'" th:href="${posts.first} ? '#' :@{/post(page=${posts.number})}"
+            <a th:class="${posts.first} ? 'disabled'" th:href="${posts.first} ? '#' :@{/post(page=${posts.number}, searchType=${searchRequestDto.searchType}, keyword=${searchRequestDto.keyword})}"
                aria-label="Previous">
                 <span aria-hidden="true">&lt;</span>
             </a>
 
             <a th:each="page: ${#numbers.sequence(start+1, last)}" th:class="${page == posts.number+1} ? 'active'"
-               th:text="${page}" th:href="@{/post(page=${page})}"></a>
+               th:text="${page}" th:href="@{/post(page=${page}, searchType=${searchRequestDto.searchType}, keyword=${searchRequestDto.keyword})}"></a>
 
-            <a th:class="${posts.last} ? 'disabled'" th:href="${posts.last} ? '#' : @{/post(page=${posts.number + 2})}"
+            <a th:class="${posts.last} ? 'disabled'" th:href="${posts.last} ? '#' : @{/post(page=${posts.number + 2}, searchType=${searchRequestDto.searchType}, keyword=${searchRequestDto.keyword})}"
                aria-label="Next">
                 <span aria-hidden="true">&gt;</span>
             </a>
 
-            <a th:href="@{/post(page=${posts.totalPages})}" aria-label="Last">
+            <a th:href="@{/post(page=${posts.totalPages}, searchType=${searchRequestDto.searchType}, keyword=${searchRequestDto.keyword})}" aria-label="Last">
                 <span aria-hidden="true">&gt;&gt;</span>
             </a>
 
         </ul>
     </nav>
+    <!--    -->
+
+    <br>
+    <form th:object="${searchRequestDto}" method="get">
+        <div class="form-group row col-12 justify-content-center">
+            <div class="col-2 mx-auto">
+                <select th:field="*{searchType}" class="form-control">
+                    <option value="title">제목</option>
+                    <option value="content">본문</option>
+                    <option value="writer">작성자</option>
+                </select>
+            </div>
+            <div class="col-8 mx-auto">
+                <input th:field="*{keyword}" type="text" class="form-control" name="keyword">
+            </div>
+            <button class="btn btn-sm btn-primary col-2 mx-auto">검색</button>
+        </div>
+    </form>
+
+    <!---->
 </div>
 </body>
 </html>
