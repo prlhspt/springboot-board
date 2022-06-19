@@ -25,24 +25,30 @@ public class CommentController {
     @PostMapping("/{postId}/new")
     public String createComment(@PathVariable("postId") Long postId,
                                 @Valid @ModelAttribute("commentSaveRequestDto") CommentSaveRequestDto commentSaveRequestDto,
+                                @RequestParam(value = "page", required = false) String page,
                                 RedirectAttributes redirectAttributes,
                                 @LoginUser SessionUser user) {
+
         commentService.register(commentSaveRequestDto, postId, user.getName());
         redirectAttributes.addAttribute("postId", postId);
+        redirectAttributes.addAttribute("page", page);
 
         return "redirect:/post/{postId}";
 
     }
 
-    @PostMapping("/{postId}/{commentId}/new")
+    @PostMapping("/{postId}/{commentId}/{ancestorId}/new")
     public String createChildComment(@PathVariable("postId") Long postId,
                                      @PathVariable("commentId") Long commentId,
+                                     @PathVariable("ancestorId") Long ancestorId,
                                      @Valid @ModelAttribute("commentSaveRequestDto") CommentSaveRequestDto commentSaveRequestDto,
+                                     @RequestParam(value = "page", required = false) String page,
                                      RedirectAttributes redirectAttributes,
                                      @LoginUser SessionUser user) {
 
-        commentService.register(commentSaveRequestDto, postId, user.getName(), commentId);
+        commentService.register(commentSaveRequestDto, postId, user.getName(), commentId, ancestorId);
         redirectAttributes.addAttribute("postId", postId);
+        redirectAttributes.addAttribute("page", page);
 
         return "redirect:/post/{postId}";
 

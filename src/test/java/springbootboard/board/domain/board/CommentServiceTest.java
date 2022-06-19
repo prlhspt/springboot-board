@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,10 +45,11 @@ class CommentServiceTest {
         Map<String, Long> idMap = createMemberAndPostAndComment();
 
         // when
-        List<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID));
+        Page<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID), Pageable.ofSize(10));
 
+        System.out.println("CommentServiceTest.registerChildComment");
         // then
-        assertThat(comment.get(0).getChild().size()).isEqualTo(4);
+        assertThat(comment.getContent().get(2).getParentWriter()).isEqualTo("nickname2");
     }
     
     @Test
@@ -57,11 +60,10 @@ class CommentServiceTest {
         commentService.delete(idMap.get("nestedCommentId3"));
 
         // when
-        List<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID));
+        Page<CommentResponseDto> comment = commentService.findComment(idMap.get(POST_ID), Pageable.ofSize(10));
 
         // then
-        assertThat(comment.get(0).getChild().get(2).getContent()).isEqualTo("삭제된 댓글입니다.");
-
+        assertThat(comment.getContent().get(3).getContent()).isEqualTo("삭제된 댓글입니다.");
     }
 
     private Map<String, Long> createMemberAndPostAndComment() throws IOException {
@@ -77,7 +79,17 @@ class CommentServiceTest {
                 .role(Role.USER)
                 .build();
 
+        Member testMember2 = Member.builder()
+                .username("username2")
+                .password("member1234")
+                .email("member2@gmail.com")
+                .loginType(LoginType.LOCAL)
+                .nickname("nickname2")
+                .role(Role.USER)
+                .build();
+
         Member member = memberRepository.save(testMember);
+        Member member2 = memberRepository.save(testMember2);
 
         MultipartFile mockMultipartFile = new MockMultipartFile("test", new byte[]{});
         List<MultipartFile> mockMultipartFiles = new ArrayList<>();
@@ -86,20 +98,20 @@ class CommentServiceTest {
         PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", mockMultipartFile, mockMultipartFiles);
         Long postId = postService.post(postSaveRequestDto, member.getUsername());
 
-        Long commentId = commentService.register(new CommentSaveRequestDto("테스트 댓글1"), postId, member.getUsername());
+        Comment comment = commentService.register(new CommentSaveRequestDto("테스트 댓글1"), postId, member.getUsername());
 
         Long nestedCommentId1 = commentService.register(
                 new CommentSaveRequestDto("테스트 대댓글 1"), postId,
-                member.getUsername(), commentId);
+                member2.getUsername(), comment.getId(), comment.getAncestorId());
 
         Long nestedCommentId2 = commentService.register(new CommentSaveRequestDto("테스트 대댓글2"), postId,
-                member.getUsername(), nestedCommentId1);
+                member.getUsername(), nestedCommentId1, comment.getAncestorId());
 
         Long nestedCommentId3 = commentService.register(new CommentSaveRequestDto("테스트 대댓글3"), postId,
-                member.getUsername(), nestedCommentId1);
+                member.getUsername(), nestedCommentId1, comment.getAncestorId());
 
         commentService.register(new CommentSaveRequestDto("테스트 대댓글4"), postId,
-                member.getUsername(), nestedCommentId2);
+                member.getUsername(), nestedCommentId2, comment.getAncestorId());
         
         map.put(POST_ID, postId);
         map.put(MEMBER_ID, member.getId());

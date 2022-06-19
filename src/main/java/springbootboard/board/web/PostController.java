@@ -6,7 +6,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +70,6 @@ public class PostController {
             return "post/createBoardForm";
         }
 
-
         postService.post(postSaveRequestDto, user.getName());
 
         return "redirect:/post";
@@ -79,17 +77,16 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public String detailPost(@PathVariable("postId") Long postId, Model model,
-                             @ModelAttribute("commentSaveRequestDto") CommentSaveRequestDto commentSaveRequestDto) {
+                             @ModelAttribute("commentSaveRequestDto") CommentSaveRequestDto commentSaveRequestDto,
+                             @PageableDefault Pageable pageable) {
 
         postService.addViewCount(postId);
 
         PostResponseDto detailPost = postService.findDetailPost(postId);
-        List<CommentResponseDto> comments = commentService.findComment(postId);
+        Page<CommentResponseDto> comments = commentService.findComment(postId, pageable);
         List<AttachmentResponseDto> attachments = attachmentService.findAttachment(postId);
 
-        for (CommentResponseDto comment : comments) {
-            detailPost.getComments().add(comment);
-        }
+        detailPost.setComments(comments);
 
         for (AttachmentResponseDto attachment : attachments) {
             if (attachment.getFileType() == FileType.FILE) {

@@ -72,7 +72,7 @@ public class PostService {
 
     public Page<PostListResponseDto> findPostList(PostSearchCond cond, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, pageable.getPageSize(), pageable.getSort());
+        pageable = PageRequest.of(page, pageable.getPageSize());
 
         return postQueryRepository.findPostListDto(cond, pageable);
     }

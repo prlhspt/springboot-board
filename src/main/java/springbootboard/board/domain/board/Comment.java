@@ -39,6 +39,8 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
+    private Long ancestorId;
+
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 
@@ -60,6 +62,10 @@ public class Comment extends BaseEntity {
 
     public void setParent(Comment parent) {
         this.parent = parent;
+    }
+
+    public void setAncestorId(Long ancestorId) {
+        this.ancestorId = ancestorId;
     }
 
     public void addChildComment(Comment child) {

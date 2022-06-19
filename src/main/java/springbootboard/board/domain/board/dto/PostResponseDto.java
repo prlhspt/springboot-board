@@ -2,6 +2,7 @@ package springbootboard.board.domain.board.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class PostResponseDto {
     private LocalDateTime createdDate;
     private Long view;
 
-    private List<CommentResponseDto> comments = new ArrayList<>();
+    private Page<CommentResponseDto> comments;
 
     private List<AttachmentResponseDto> imageFiles = new ArrayList<>();
     private AttachmentResponseDto attachFile;

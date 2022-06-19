@@ -9,11 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
-import springbootboard.board.domain.board.dto.*;
+import springbootboard.board.domain.board.Post;
+import springbootboard.board.domain.board.dto.PostListResponseDto;
+import springbootboard.board.domain.board.dto.PostResponseDto;
+import springbootboard.board.domain.board.dto.PostSearchCond;
+import springbootboard.board.domain.board.dto.QPostResponseDto;
 
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
+import static springbootboard.board.domain.board.QComment.comment;
 import static springbootboard.board.domain.board.QPost.post;
 import static springbootboard.board.domain.member.QMember.member;
 
@@ -33,10 +39,10 @@ public class PostQueryRepository {
     }
 
     public Page<PostListResponseDto> findPostListDto(PostSearchCond cond, Pageable pageable) {
-        List<PostListResponseDto> content = queryFactory.select(new QPostListResponseDto(post.id, post.title, post.member.nickname
-                        , post.createdDate, post.view))
-                .from(post)
+
+        List<Post> entity = queryFactory.selectFrom(post)
                 .join(post.member, member)
+                .leftJoin(post.comments, comment).fetchJoin()
                 .where(titleAndContentContainsAndWriterEq(cond.getTitle(), cond.getContent(), cond.getWriter())
                         .and(post.deleted.eq(false)))
                 .offset(pageable.getOffset())
@@ -44,15 +50,24 @@ public class PostQueryRepository {
                 .orderBy(post.id.desc())
                 .fetch();
 
-        // fetchResults Deprecated 예정이라서 Count 쿼리 따로 작성
+        List<PostListResponseDto> content = entity.stream()
+                .map(p -> new PostListResponseDto(p.getId(),
+                        p.getTitle(),
+                        p.getMember().getNickname(),
+                        p.getCreatedDate(),
+                        p.getView(),
+                        (long) p.getComments().size()))
+                .collect(Collectors.toList());
+
         JPAQuery<Long> countQuery = queryFactory
                 .select(post.count())
                 .from(post)
                 .join(post.member, member)
                 .where(titleAndContentContainsAndWriterEq(cond.getTitle(), cond.getContent(), cond.getWriter())
-                        .and(post.deleted.eq(false)));
+                        .and(post.deleted.eq(false)))
+                .orderBy(post.id.desc());
 
-        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchOne());
 
 
     }

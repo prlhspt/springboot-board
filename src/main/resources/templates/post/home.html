@@ -30,6 +30,7 @@
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일</th>
+                        <th>댓글수</th>
                         <th>조회수</th>
                     </tr>
                     </thead>
@@ -40,6 +41,7 @@
                         <td th:text="${post.title}"></td>
                         <td th:text="${post.writer}"></td>
                         <td th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${post.commentCount}"></td>
                         <td th:text="${post.view}"></td>
                     </tr>
                     </tbody>
@@ -52,7 +54,7 @@
     <nav class="center">
         <ul class="pagination"
             th:with="currentNumber=${posts.number},
-            start=(${posts.number < 4 ? 0 : posts.number - 4}), last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
+            start=(${posts.number < 4 ? 0 : posts.number - 4}), last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages == 0 ? 1 : posts.totalPages})">
 
             <a th:href="@{/post(page=1)}" aria-label="First">
                 <span aria-hidden="true">&lt;&lt;</span>

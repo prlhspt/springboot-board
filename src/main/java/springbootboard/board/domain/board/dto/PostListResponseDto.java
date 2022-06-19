@@ -1,6 +1,5 @@
 package springbootboard.board.domain.board.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,13 +12,14 @@ public class PostListResponseDto {
     private String writer;
     private LocalDateTime createdDate;
     private Long view;
+    private Long commentCount;
 
-    @QueryProjection
-    public PostListResponseDto(Long id, String title, String writer, LocalDateTime createdDate, Long view) {
+    public PostListResponseDto(Long id, String title, String writer, LocalDateTime createdDate, Long view, Long commentCount) {
         this.id = id;
         this.title = title;
         this.writer = writer;
         this.createdDate = createdDate;
         this.view = view;
+        this.commentCount = commentCount;
     }
 }

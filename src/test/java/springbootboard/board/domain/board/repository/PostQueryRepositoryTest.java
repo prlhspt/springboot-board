@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
+import springbootboard.board.domain.board.dto.CommentResponseDto;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
@@ -76,6 +78,9 @@ class PostQueryRepositoryTest {
         return post1;
     }
 
+
+    // 해당 테스트는 엔티티를 직접 조회하기 때문에 영속화가 돼있어야 해서 @Transactional 사용
+    @Transactional(readOnly = true)
     @Test
     @DisplayName("Post 의 전체 목록 조회")
     public void findPostListDto(){
@@ -109,10 +114,10 @@ class PostQueryRepositoryTest {
         Post post = makePosts();
 
         // when
-        List<Comment> result = commentQueryRepository.findCommentByPostId(post.getId());
+        Page<CommentResponseDto> result = commentQueryRepository.findCommentByPostId(post.getId(), Pageable.ofSize(10));
 
         // then
-        assertThat(result).extracting(Comment::getContent).containsExactly("comment1", "comment2");
+        assertThat(result).extracting(CommentResponseDto::getContent).containsExactly("comment1", "comment2");
     }
 
 }
