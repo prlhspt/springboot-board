@@ -26,10 +26,10 @@ public class Member extends BaseEntity {
 
     private String password;
 
-    @Column(unique = true, length = 20)
+    @Column(unique = true, length = 20, nullable = false)
     private String nickname;
 
-    @Column(unique = true, length = 50)
+    @Column(unique = true, length = 50, nullable = false)
     private String email;
 
     @Enumerated(EnumType.STRING)
@@ -56,6 +56,12 @@ public class Member extends BaseEntity {
         this.role = role;
         this.deleted = false;
     }
+
+    public Member update(String username) {
+        this.username = username;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Member{" +

@@ -97,7 +97,8 @@ public class PostController {
     @GetMapping("/{postId}")
     public String detailPost(@PathVariable("postId") Long postId, Model model,
                              @ModelAttribute("commentSaveRequestDto") CommentSaveRequestDto commentSaveRequestDto,
-                             @PageableDefault Pageable pageable) {
+                             @PageableDefault Pageable pageable,
+                             @LoginUser SessionUser user) {
 
         postService.addViewCount(postId);
 
@@ -116,6 +117,7 @@ public class PostController {
         }
 
         model.addAttribute("detailPost", detailPost);
+        model.addAttribute("username", user.getName());
 
         return "post/detailPost";
     }

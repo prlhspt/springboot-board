@@ -101,7 +101,7 @@
                         </form>
                     </div>
                 </td>
-                <td th:if="${#authentication.name} == ${comment.username}">
+                <td th:if="${username} == ${comment.username}">
                     <form th:action="@{/comment/{postId}/{commentId} (postId=${detailPost.id},
                                           commentId=${comment.id})}"
                           th:object="${commentSaveRequestDto}" th:method="delete">

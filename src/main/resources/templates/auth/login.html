@@ -6,7 +6,7 @@
     <link th:href="@{/css/common.css}" href="/css/common.css" rel="stylesheet">
 </head>
 <body>
-<div class="container">
+<div class="container" style="max-width: 600px">
 
     <div th:replace="fragments/common :: header">header</div>
 
@@ -14,7 +14,8 @@
         <h2>로그인</h2>
     </div>
 
-    <div th:if="${param.error}" th:text="'아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.'" class="my-2 mb-5 alert alert-danger"/>
+    <div th:if="${param.error}" th:text="'아이디 또는 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시 확인해주세요.'"
+         class="my-2 mb-5 alert alert-danger"/>
 
     <form th:action th:object="${memberLoginDto}" method="post">
         <div th:if="${#fields.hasGlobalErrors()}">
@@ -42,11 +43,29 @@
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='home.html'"
-                        th:onclick="|location.href='@{/}'|" type="button">취소</button>
+                        th:onclick="|location.href='@{/}'|" type="button">취소
+                </button>
             </div>
         </div>
 
     </form>
+
+    <div class="divider">
+        <div class="divider__line"></div>
+        <div class="divider__word">OR</div>
+        <div class="divider__line"></div>
+    </div>
+
+    <a href="/oauth2/authorization/google" class="sign__btn-provider btn-provider--google">
+        <img class="mx-2" src="https://resources.lakus.live/static/images/icons/ic-google-logo.png"/>
+        구글 로그인
+    </a>
+
+    <a href="/oauth2/authorization/naver" class="sign__btn-provider btn-provider--naver">
+        <img class="mx-2" src="https://resources.lakus.live/static/images/icons/ic-naver-logo.png"/>
+        네이버 로그인
+    </a>
+
 </div>
 
 </body>
