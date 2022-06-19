@@ -15,10 +15,6 @@ p {
 .menu:last-child {
   border-bottom: 1px solid #808080;
 }
-.header {
-  display: flex;
-  cursor: pointer;
-}
 
 .title {
   flex: 1;
@@ -28,7 +24,22 @@ p {
   width: 20px;
 }
 
+.header {
+  display: flex;
+  cursor: pointer;
+}
+
 .content {
+  display:none;
+  padding:10px;
+}
+
+.header2 {
+  display: flex;
+  cursor: pointer;
+}
+
+.content2 {
   display:none;
   padding:10px;
 }

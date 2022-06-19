@@ -65,6 +65,14 @@ public class CommentService {
     }
 
     @Transactional
+    public void updateComment(Long commentId, CommentSaveRequestDto commentSaveRequestDto) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
+                new IllegalArgumentException("해당 댓글이 존재하지 않습니다. commentId = " + commentId));
+
+        comment.update(commentSaveRequestDto.toEntity());
+    }
+
+    @Transactional
     public void delete(Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
                 new IllegalArgumentException("해당 댓글이 존재하지 않습니다. commentId = " + commentId));
@@ -77,6 +85,16 @@ public class CommentService {
 
 
     public Page<CommentResponseDto> findComment(Long postId, Pageable pageable) {
+
+        // 페이지 선택이 없을때는 제일 마지막 페이지로 조정
+        if (pageable.getPageNumber() == 0) {
+            Page<CommentResponseDto> pageDto = commentQueryRepository.findCommentByPostId(postId, pageable);
+
+            int page = (pageDto.getTotalPages() == 0) ? 0 : (pageDto.getTotalPages() - 1);
+            pageable = PageRequest.of(page, pageable.getPageSize());
+
+            return commentQueryRepository.findCommentByPostId(postId, pageable);
+        }
 
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, pageable.getPageSize());

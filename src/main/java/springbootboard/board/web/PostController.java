@@ -111,13 +111,12 @@ public class PostController {
 
     @PostMapping("/new")
     public String createPost(@Valid @ModelAttribute("postSaveRequestDto") PostSaveRequestDto postSaveRequestDto,
-            BindingResult bindingResult, @LoginUser SessionUser user,
-                             RedirectAttributes redirectAttributes) throws IOException {
+            BindingResult bindingResult, @LoginUser SessionUser user, RedirectAttributes redirectAttributes) throws IOException {
 
         List<MultipartFile> imageFiles = postSaveRequestDto.getImageFiles();
         for (MultipartFile imageFile : imageFiles) {
             if (!imageFile.isEmpty() && !imageFile.getContentType().contains("image")) {
-                bindingResult.reject("onlyImageFile");
+                bindingResult.reject("OnlyImageFile");
             }
         }
 
@@ -144,12 +143,19 @@ public class PostController {
     @PostMapping("/{postId}/edit")
     public String updatePost(@PathVariable Long postId,
                              @Valid @ModelAttribute("postSaveRequestDto") PostSaveRequestDto postSaveRequestDto,
-                             BindingResult bindingResult, RedirectAttributes redirectAttributes) throws IOException {
+                             BindingResult bindingResult, RedirectAttributes redirectAttributes,
+                             @LoginUser SessionUser user) throws IOException {
+
+        Post post = postService.findOne(postId);
+
+        if (!user.getName().equals(post.getMember().getUsername())) {
+            throw new AccessDeniedException("사용 권한이 없습니다.");
+        }
 
         List<MultipartFile> imageFiles = postSaveRequestDto.getImageFiles();
         for (MultipartFile imageFile : imageFiles) {
             if (!imageFile.isEmpty() && !imageFile.getContentType().contains("image")) {
-                bindingResult.reject("onlyImageFile");
+                bindingResult.reject("OnlyImageFile");
             }
         }
 

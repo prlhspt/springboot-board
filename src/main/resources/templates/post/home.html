@@ -8,19 +8,22 @@
 </head>
 
 <body>
-<div class="container mt-3 mb-3">
+<div class="container">
     <div th:replace="fragments/common :: header">header</div>
 
     <div class="py-4 text-center">
         <h2>게시판</h2>
     </div>
 
-    <div class="row">
-
-        <button class="w-25 m-3 btn btn-secondary float-end" th:onclick="|location.href='@{/post/new}'|"
+    <div class="py-4">
+        <button class="btn btn-secondary btn-sm mx-1 float-end" th:onclick="|location.href='@{/post/new}'|"
                 onclick="location.href='createPostForm.html'" type="submit">
             게시글 등록
         </button>
+    </div>
+
+
+    <div class="row">
 
         <div class="col-md-12">
             <div class="table-wrap">

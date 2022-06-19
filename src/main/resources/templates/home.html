@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/common.css}" href="/css/common.css" rel="stylesheet">
 </head>
 <body>
 
-<div class="container" style="max-width: 600px">
+<div class="container">
     <div th:replace="fragments/common :: header">header</div>
 
     <div th:if="${param.signup}" th:text="'회원가입이 완료되었습니다.'" class="my-2 mb-5 alert alert-success"/>

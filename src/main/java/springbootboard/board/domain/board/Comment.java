@@ -73,6 +73,10 @@ public class Comment extends BaseEntity {
         child.setParent(this);
     }
 
+    public void update(Comment comment) {
+        this.content = comment.getContent();
+    }
+
     public void delete() {
         this.deleted = true;
     }
