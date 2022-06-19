@@ -12,7 +12,9 @@ import java.util.List;
 public class PostResponseDto {
 
     private Long id;
+    private String username;
     private String title;
+
     private String content;
     private String writer;
 
@@ -25,8 +27,9 @@ public class PostResponseDto {
     private AttachmentResponseDto attachFile;
 
     @QueryProjection
-    public PostResponseDto(Long id, String title, String content, String writer, LocalDateTime createdDate, Long view) {
+    public PostResponseDto(Long id, String username, String title, String content, String writer, LocalDateTime createdDate, Long view) {
         this.id = id;
+        this.username = username;
         this.title = title;
         this.content = content;
         this.writer = writer;

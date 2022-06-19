@@ -8,14 +8,16 @@ import java.time.LocalDateTime;
 public class PostListResponseDto {
 
     private Long id;
+    private String username;
     private String title;
     private String writer;
     private LocalDateTime createdDate;
     private Long view;
     private Long commentCount;
 
-    public PostListResponseDto(Long id, String title, String writer, LocalDateTime createdDate, Long view, Long commentCount) {
+    public PostListResponseDto(Long id, String username, String title, String writer, LocalDateTime createdDate, Long view, Long commentCount) {
         this.id = id;
+        this.username = username;
         this.title = title;
         this.writer = writer;
         this.createdDate = createdDate;

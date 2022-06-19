@@ -68,6 +68,11 @@ public class Post extends BaseEntity {
         this.view++;
     }
 
+    public void update(Post post) {
+        this.title = post.title;
+        this.content = post.content;
+    }
+
     public void delete() {
         this.deleted = true;
     }

@@ -29,8 +29,8 @@ public class PostQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public PostResponseDto findPostDto(Long id) {
-        return queryFactory.select(new QPostResponseDto(post.id, post.title, post.content, post.member.nickname,
+    public PostResponseDto findPostResponseDto(Long id) {
+        return queryFactory.select(new QPostResponseDto(post.id, post.member.username, post.title, post.content, post.member.nickname,
                         post.createdDate, post.view))
                 .from(post)
                 .join(post.member, member).on(post.id.eq(id))
@@ -52,6 +52,7 @@ public class PostQueryRepository {
 
         List<PostListResponseDto> content = entity.stream()
                 .map(p -> new PostListResponseDto(p.getId(),
+                        p.getMember().getUsername(),
                         p.getTitle(),
                         p.getMember().getNickname(),
                         p.getCreatedDate(),
@@ -68,8 +69,19 @@ public class PostQueryRepository {
                 .orderBy(post.id.desc());
 
         return PageableExecutionUtils.getPage(content, pageable, () -> countQuery.fetchOne());
+    }
 
+    public Post findPost(Long id) {
+        return queryFactory.selectFrom(post)
+                .where(post.deleted.eq(false).and(post.id.eq(id)))
+                .fetchOne();
+    }
 
+    public Post findPostWithMember(Long id) {
+        return queryFactory.selectFrom(post)
+                .join(post.member, member).fetchJoin()
+                .where(post.deleted.eq(false).and(post.id.eq(id)))
+                .fetchOne();
     }
 
     private BooleanBuilder nullSafeBuilder(Supplier<BooleanExpression> f) {

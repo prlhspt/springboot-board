@@ -22,6 +22,7 @@ public class AttachmentQueryRepository {
                         , attachment.storeFilePath, attachment.uploadFileName))
                 .from(attachment)
                 .join(attachment.post, post).on(attachment.post.id.eq(postId))
+                .where(attachment.deleted.eq(false))
                 .fetch();
 
     }

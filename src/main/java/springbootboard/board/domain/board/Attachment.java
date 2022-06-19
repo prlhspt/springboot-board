@@ -33,6 +33,9 @@ public class Attachment extends BaseEntity {
     private FileType fileType;
 
     @Column(nullable = false)
+    private boolean deleted;
+
+    @Column(nullable = false)
     private Long size;
 
     @ManyToOne(fetch = LAZY)
@@ -45,8 +48,13 @@ public class Attachment extends BaseEntity {
         this.storeFileName = storeFileName;
         this.uploadFileName = uploadFileName;
         this.fileType = fileType;
+        this.deleted = false;
         this.size = size;
         this.post = post;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 
     public void setPost(Post post) {

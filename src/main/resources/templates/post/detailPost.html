@@ -20,6 +20,17 @@
         <h2>게시글</h2>
     </div>
 
+    <form th:if="${username} == ${detailPost.username}"
+          th:action="@{/post/{postId} (postId=${detailPost.id})}" th:method="delete">
+        <button class="btn btn-danger btn-sm float-end" type="submit">삭제</button>
+    </form>
+    <form th:if="${username} == ${detailPost.username}" th:action="@{/post/{postId}/edit (postId=${detailPost.id})}"
+          th:object="${commentSaveRequestDto}" th:method="get">
+        <button class="btn btn-secondary btn-sm float-end" type="submit">수정</button>
+    </form>
+    <br>
+    <br>
+
     <table class="table table-responsive text-center">
         <tbody>
         <tr>
@@ -103,8 +114,7 @@
                 </td>
                 <td th:if="${username} == ${comment.username}">
                     <form th:action="@{/comment/{postId}/{commentId} (postId=${detailPost.id},
-                                          commentId=${comment.id})}"
-                          th:object="${commentSaveRequestDto}" th:method="delete">
+                                          commentId=${comment.id})}" th:method="delete">
                         <button class="btn btn-danger btn-sm" type="submit">삭제</button>
                     </form>
                 </td>

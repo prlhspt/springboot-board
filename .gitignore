@@ -39,3 +39,5 @@ out/
 ### config ###
 application*
 db/data
+
+/src/main/resources/static/uploadFile/

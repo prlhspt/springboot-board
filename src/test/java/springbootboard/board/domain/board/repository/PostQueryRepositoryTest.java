@@ -19,8 +19,6 @@ import springbootboard.board.domain.board.dto.PostListResponseDto;
 import springbootboard.board.domain.board.dto.PostResponseDto;
 import springbootboard.board.domain.board.dto.PostSearchCond;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -102,7 +100,7 @@ class PostQueryRepositoryTest {
         Post post = makePosts();
 
         // when
-        PostResponseDto result = postQueryRepository.findPostDto(post.getId());
+        PostResponseDto result = postQueryRepository.findPostResponseDto(post.getId());
         // then
         assertThat(result.getTitle()).isEqualTo(post.getTitle());
     }

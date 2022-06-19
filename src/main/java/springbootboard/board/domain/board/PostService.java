@@ -38,26 +38,53 @@ public class PostService {
         Post post = postSaveRequestDto.toEntity();
         post.setMember(member);
 
-        AttachmentSaveRequestDto attachFile = fileStore.storeFile(postSaveRequestDto.getAttachFile(), FileType.FILE);
-        List<AttachmentSaveRequestDto> imageFiles = fileStore.storeFiles(postSaveRequestDto.getImageFiles(), FileType.IMAGE);
-
-        if (attachFile != null) {
-            post.addAttachment(attachFile.toEntity());
-        }
-
-        if (imageFiles != null) {
-            for (AttachmentSaveRequestDto imageFile : imageFiles) {
-                post.addAttachment(imageFile.toEntity());
-            }
-        }
+        storeAttachments(postSaveRequestDto, post);
 
         return postRepository.save(post).getId();
     }
 
     @Transactional
+    public void updatePost(Long postId, PostSaveRequestDto postSaveRequestDto) throws IOException {
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+                new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId = " + postId));
+
+        post.update(postSaveRequestDto.toEntity());
+        storeAttachments(postSaveRequestDto, post);
+    }
+
+    private void storeAttachments(PostSaveRequestDto postSaveRequestDto, Post post) throws IOException {
+        AttachmentSaveRequestDto attachFile = fileStore.storeFile(postSaveRequestDto.getAttachFile(), FileType.FILE);
+        List<AttachmentSaveRequestDto> imageFiles = fileStore.storeFiles(postSaveRequestDto.getImageFiles(), FileType.IMAGE);
+
+        if (attachFile != null) {
+            post.getAttachments().stream()
+                            .forEach(p -> {
+                                if (p.getFileType() == FileType.FILE) {
+                                   p.delete();
+                                }
+                            });
+
+            post.addAttachment(attachFile.toEntity());
+        }
+
+        if (imageFiles != null && imageFiles.size() != 0) {
+            post.getAttachments().stream()
+                    .forEach(p -> {
+                        if (p.getFileType() == FileType.IMAGE) {
+                            p.delete();
+                        }
+                    });
+
+            for (AttachmentSaveRequestDto imageFile : imageFiles) {
+                post.addAttachment(imageFile.toEntity());
+            }
+        }
+    }
+
+    @Transactional
     public void delete(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() ->
-                new IllegalArgumentException("해당 유저가 존재하지 않습니다. postId = " + postId));
+                new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId = " + postId));
         post.delete();
     }
 
@@ -70,6 +97,15 @@ public class PostService {
         post.addViewCount();
     }
 
+    public Post findOne(Long postId) {
+        return postQueryRepository.findPostWithMember(postId);
+    }
+
+    public PostSaveRequestDto findOneDto(Long postId) {
+        Post post = postQueryRepository.findPost(postId);
+        return PostSaveRequestDto.ofEntity(post);
+    }
+
     public Page<PostListResponseDto> findPostList(PostSearchCond cond, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, pageable.getPageSize());
@@ -78,7 +114,7 @@ public class PostService {
     }
 
     public PostResponseDto findDetailPost(Long postId) {
-        PostResponseDto postResponseDto = postQueryRepository.findPostDto(postId);
+        PostResponseDto postResponseDto = postQueryRepository.findPostResponseDto(postId);
         if (postResponseDto == null) {
             throw new IllegalArgumentException("해당 게시글이 존재하지 않습니다. postId = " + postId);
         }
