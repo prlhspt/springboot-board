@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="header">
+    <br>
+    <br>
+
+    <div sec:authorize="isAnonymous()" class="row no-gutters justify-content-center">
+        <div class="col-md-auto">
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/}'|"
+                    onclick="location.href='home.html'" type="submit">
+                홈으로
+            </button>
+        </div>
+        <div class="col-md-auto">
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/post}'|"
+                    onclick="location.href='home.html'" type="submit">
+                게시판
+            </button>
+        </div>
+
+        <div class="col-md-auto">
+            <button class="btn btn-secondary" type="button" th:onclick="|location.href='@{/auth/signup}'|">
+                회원 가입
+            </button>
+        </div>
+        <div class="col-md-auto">
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/auth/login}'|" type="button">
+                로그인
+            </button>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" class="col-md-auto">
+            <form th:action="@{/auth/logout}" method="post">
+                <button class="btn btn-secondary" th:onclick="|location.href='@{/}'|"
+                        onclick="location.href='home.html'" type="submit">
+                    로그아웃
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" class="row no-gutters justify-content-center">
+        <div class="col-md-auto">
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/}'|"
+                    onclick="location.href='home.html'" type="submit">
+                홈으로
+            </button>
+        </div>
+        <div class="col-md-auto">
+            <button class="btn btn-secondary" th:onclick="|location.href='@{/post}'|"
+                    onclick="location.href='home.html'" type="submit">
+                게시판
+            </button>
+        </div>
+
+        <div class="col-md-auto">
+            <form th:action="@{/auth/logout}" method="post">
+                <button class="btn btn-secondary" th:onclick="|location.href='@{/}'|"
+                        onclick="location.href='home.html'" type="submit">
+                    로그아웃
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-4">
+</div>
+</body>
+</html>

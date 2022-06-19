@@ -10,6 +10,8 @@
 <body>
 
 <div class="container mt-3">
+    <div th:replace="fragments/common :: header">header</div>
+
     <form th:action="@{/post/new}" th:object="${postSaveRequestDto}" method="post" enctype="multipart/form-data">
 
         <div th:if="${#fields.hasGlobalErrors()}">

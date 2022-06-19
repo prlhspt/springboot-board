@@ -7,6 +7,7 @@
 <body>
 
 <div class="container" style="max-width: 600px">
+    <div th:replace="fragments/common :: header">header</div>
 
     <div th:if="${param.signup}" th:text="'회원가입이 완료되었습니다.'" class="my-2 mb-5 alert alert-success"/>
 
@@ -15,10 +16,13 @@
     </div>
 
     <div class="row">
-        <button class="w-100 mb-4 btn btn-secondary btn-lg" th:onclick="|location.href='@{/post}'|"
-                onclick="location.href='home.html'" type="submit">
-            게시판
-        </button>
+        <div class="col">
+            <button class="w-100 mb-4 btn btn-secondary btn-lg" th:onclick="|location.href='@{/post}'|"
+                    onclick="location.href='home.html'" type="submit">
+                게시판
+            </button>
+        </div>
+
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{/auth/signup}'|">
                 회원 가입
