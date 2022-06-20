@@ -42,8 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.session:spring-session-data-redis'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-	// 운영 시 주석 제거
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
+	testImplementation 'com.h2database:h2:2.1.210'
 
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
@@ -97,4 +96,10 @@ task copySubmodule(type: Copy) {
 	from './springboot-board-config'
 	include '*.yml'
 	into './src/main/resources'
+}
+
+task copyTestSubmodule(type: Copy) {
+	from './springboot-board-config/test'
+	include '*.yml'
+	into './src/test/resources'
 }
