@@ -58,7 +58,8 @@
 
     <br>
     <h4>내용</h4>
-    <img th:each="imageFile : ${detailPost.imageFiles}" th:src="|/post/images/${imageFile.storeFileName}|"/>
+    <img th:each="imageFile : ${detailPost.imageFiles}" th:src="|/post/images/${imageFile.storeFileName}|"
+    style="width : 50%; height: 50%"/>
     <div th:text="${detailPost.content}"></div>
 
     <br>
