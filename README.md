@@ -1,14 +1,16 @@
 # springboot-board
 
-Spring, JPA, Querydsl 와 배포 전략에 대해서 학습했던 내용을 실제로 사용해보기 위해 게시판이라는 주제로 구현해본 프로젝트입니다.
+Spring, JPA, Querydsl 와 배포 전략에 대해서 학습했던 내용을 실제로 사용해보기 위해 커뮤니티 게시판이라는 주제로 구현해본 프로젝트입니다.
 
-## 배포 구조
+## 사용 기술
 
-![springboard](./readmeImage/springboard-structure.png)
-
-## ER Diagram
-
-![springboard](./readmeImage/2022-06-21_16-27-37.png)
+- SpringBoot 2.6.7
+- Spring Data JPA
+- Spring Security
+- OAuth Client 2.0
+- Querydsl
+- Thymeleaf
+- Jenkins
 
 ## 기능
 
@@ -29,14 +31,13 @@ Spring, JPA, Querydsl 와 배포 전략에 대해서 학습했던 내용을 실�
 - [x] jenkins로 수정 시 자동 배포
 - [x] 이중화 구성
 
-## 사용 기술
+## 배포 구조
 
-- SpringBoot 2.6.7
-- Spring Data JPA
-- Spring Security
-- OAuth Client 2.0
-- Querydsl
-- Thymeleaf
+![springboard](./readmeImage/springboard-structure.png)
+
+## ER Diagram
+
+![springboard](./readmeImage/2022-06-21_16-27-37.png)
 
 ## 동작 사진
 
