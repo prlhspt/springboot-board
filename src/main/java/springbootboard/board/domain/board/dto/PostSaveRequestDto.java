@@ -1,6 +1,5 @@
 package springbootboard.board.domain.board.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +11,7 @@ import java.util.List;
 @Data
 public class PostSaveRequestDto {
 
+    private Long id;
     @NotBlank
     private String title;
     @NotBlank
@@ -21,7 +21,8 @@ public class PostSaveRequestDto {
     private List<MultipartFile> imageFiles;
 
     @Builder
-    public PostSaveRequestDto(String title, String content, MultipartFile attachFile, List<MultipartFile> imageFiles) {
+    public PostSaveRequestDto(Long id, String title, String content, MultipartFile attachFile, List<MultipartFile> imageFiles) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.attachFile = attachFile;
@@ -37,6 +38,7 @@ public class PostSaveRequestDto {
 
     public static PostSaveRequestDto ofEntity(Post post) {
         return PostSaveRequestDto.builder()
+                .id(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .build();

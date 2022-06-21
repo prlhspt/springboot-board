@@ -95,7 +95,13 @@ class CommentServiceTest {
         List<MultipartFile> mockMultipartFiles = new ArrayList<>();
         mockMultipartFiles.add(mockMultipartFile);
 
-        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", mockMultipartFile, mockMultipartFiles);
+        PostSaveRequestDto postSaveRequestDto = PostSaveRequestDto.builder()
+                .title("테스트 제목")
+                .content("테스트 내용")
+                .attachFile(mockMultipartFile)
+                .imageFiles(mockMultipartFiles)
+                .build();
+
         Long postId = postService.post(postSaveRequestDto, member.getUsername());
 
         Comment comment = commentService.register(new CommentSaveRequestDto("테스트 댓글1"), postId, member.getUsername());

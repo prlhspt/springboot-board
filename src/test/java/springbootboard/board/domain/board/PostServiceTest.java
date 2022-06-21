@@ -198,12 +198,33 @@ class PostServiceTest {
         ArrayList<MultipartFile> multipartFiles = new ArrayList<>();
         multipartFiles.add(multipartFile);
 
-        PostSaveRequestDto postSaveRequestDto3 = new PostSaveRequestDto("제목", "테스트 내용2", multipartFile, multipartFiles);
-        PostSaveRequestDto postSaveRequestDto2 = new PostSaveRequestDto("테스트 제목2", "테스트", multipartFile, multipartFiles);
-        PostSaveRequestDto postSaveRequestDto = new PostSaveRequestDto("테스트 제목", "테스트 내용", multipartFile, multipartFiles);
+        PostSaveRequestDto postSaveRequestDto3 = PostSaveRequestDto
+                .builder()
+                .title("제목")
+                .content("테스트 내용2")
+                .attachFile(multipartFile)
+                .imageFiles(multipartFiles)
+                .build();
+
+        PostSaveRequestDto postSaveRequestDto2 = PostSaveRequestDto
+                .builder()
+                .title("테스트 제목2")
+                .content("테스트")
+                .attachFile(multipartFile)
+                .imageFiles(multipartFiles)
+                .build();
+
+        PostSaveRequestDto postSaveRequestDto1 = PostSaveRequestDto
+                .builder()
+                .title("테스트 제목")
+                .content("테스트 내용")
+                .attachFile(multipartFile)
+                .imageFiles(multipartFiles)
+                .build();
+
         postService.post(postSaveRequestDto3, member.getUsername());
         postService.post(postSaveRequestDto2, member.getUsername());
-        Long postId = postService.post(postSaveRequestDto, member.getUsername());
+        Long postId = postService.post(postSaveRequestDto1, member.getUsername());
 
         map.put(POST_ID, postId);
         map.put(MEMBER_ID, member.getId());

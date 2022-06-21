@@ -46,8 +46,11 @@ public class AuthController {
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("memberLoginDto") MemberLoginDto memberLoginDto,
                             HttpServletRequest request) {
-        String referrer = request.getHeader("Referer");
-        request.getSession().setAttribute("prevPage", referrer);
+
+        String uri = request.getHeader("Referer");
+        if (uri != null && !uri.contains("/login")) {
+            request.getSession().setAttribute("prevPage", uri);
+        }
 
         return "auth/login";
     }
