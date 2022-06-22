@@ -37,7 +37,14 @@ public class AuthController {
             return "auth/signup";
         }
 
-        authService.signup(memberSaveDto);
+        authService.signup(memberSaveDto, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "auth/signup";
+        }
+
+        if (bindingResult.hasGlobalErrors())
 
         redirectAttributes.addAttribute("signup", true);
         return "redirect:/";
