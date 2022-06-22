@@ -85,7 +85,7 @@
             <tr>
                 <td th:text="${comment.id}"></td>
                 <td>
-                    <div th:if="${comment.getParentWriter() != null}">----></div>
+                    <div th:if="${comment.getParentWriter() != null}">--></div>
                 </td>
                 <td th:text="${comment.getParentWriter()}"></td>
                 <td th:text="${comment.writer}"></td>
