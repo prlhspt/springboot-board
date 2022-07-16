@@ -20,9 +20,11 @@ import org.springframework.web.util.UriUtils;
 import springbootboard.board.config.auth.LoginUser;
 import springbootboard.board.config.auth.dto.SessionUser;
 import springbootboard.board.domain.board.*;
-import springbootboard.board.domain.board.dto.*;
+import springbootboard.board.service.AttachmentService;
+import springbootboard.board.service.CommentService;
+import springbootboard.board.service.PostService;
 import springbootboard.board.util.FileStore;
-import springbootboard.board.web.dto.SearchRequestDto;
+import springbootboard.board.web.dto.*;
 
 import javax.validation.Valid;
 import java.io.IOException;

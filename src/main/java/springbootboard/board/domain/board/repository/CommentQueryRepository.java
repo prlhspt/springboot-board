@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import springbootboard.board.domain.board.Comment;
-import springbootboard.board.domain.board.dto.CommentResponseDto;
+import springbootboard.board.web.dto.CommentResponseDto;
 
 import java.util.List;
 import java.util.stream.Collectors;

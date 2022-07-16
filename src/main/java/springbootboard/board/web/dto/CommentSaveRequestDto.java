@@ -1,4 +1,4 @@
-package springbootboard.board.domain.board.dto;
+package springbootboard.board.web.dto;
 
 import lombok.Builder;
 import lombok.Data;

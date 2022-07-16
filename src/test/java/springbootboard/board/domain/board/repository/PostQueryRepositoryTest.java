@@ -8,16 +8,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-import springbootboard.board.domain.board.dto.CommentResponseDto;
+import springbootboard.board.web.dto.CommentResponseDto;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
 import springbootboard.board.domain.board.Comment;
 import springbootboard.board.domain.board.Post;
-import springbootboard.board.domain.board.dto.PostListResponseDto;
-import springbootboard.board.domain.board.dto.PostResponseDto;
-import springbootboard.board.domain.board.dto.PostSearchCond;
+import springbootboard.board.web.dto.PostListResponseDto;
+import springbootboard.board.web.dto.PostResponseDto;
+import springbootboard.board.web.dto.PostSearchCond;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

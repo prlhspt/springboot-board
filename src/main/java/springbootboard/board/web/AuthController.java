@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import springbootboard.board.service.AuthService;
 import springbootboard.board.web.dto.MemberLoginDto;
 import springbootboard.board.web.dto.MemberSaveDto;
 

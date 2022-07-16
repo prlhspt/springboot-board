@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import springbootboard.board.domain.board.FileType;
-import springbootboard.board.domain.board.dto.AttachmentSaveRequestDto;
+import springbootboard.board.web.dto.AttachmentSaveRequestDto;
 
 import java.io.File;
 import java.io.IOException;

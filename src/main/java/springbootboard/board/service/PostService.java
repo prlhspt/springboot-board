@@ -1,4 +1,4 @@
-package springbootboard.board.domain.board;
+package springbootboard.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -6,12 +6,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springbootboard.board.domain.board.dto.*;
+import springbootboard.board.domain.board.FileType;
+import springbootboard.board.domain.board.Post;
 import springbootboard.board.domain.board.repository.PostQueryRepository;
 import springbootboard.board.domain.board.repository.PostRepository;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.util.FileStore;
+import springbootboard.board.web.dto.*;
 
 import java.io.IOException;
 import java.util.List;

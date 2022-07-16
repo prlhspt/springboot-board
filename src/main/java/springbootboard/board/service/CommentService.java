@@ -1,4 +1,4 @@
-package springbootboard.board.domain.board;
+package springbootboard.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -6,8 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springbootboard.board.domain.board.dto.CommentResponseDto;
-import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
+import springbootboard.board.domain.board.Comment;
+import springbootboard.board.domain.board.Post;
+import springbootboard.board.web.dto.CommentResponseDto;
+import springbootboard.board.web.dto.CommentSaveRequestDto;
 import springbootboard.board.domain.board.repository.CommentQueryRepository;
 import springbootboard.board.domain.board.repository.CommentRepository;
 import springbootboard.board.domain.board.repository.PostRepository;

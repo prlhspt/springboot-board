@@ -1,4 +1,4 @@
-package springbootboard.board.domain.board;
+package springbootboard.board.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,13 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import springbootboard.board.domain.board.Comment;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
-import springbootboard.board.domain.board.dto.CommentResponseDto;
-import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
-import springbootboard.board.domain.board.dto.PostSaveRequestDto;
+import springbootboard.board.web.dto.CommentResponseDto;
+import springbootboard.board.web.dto.CommentSaveRequestDto;
+import springbootboard.board.web.dto.PostSaveRequestDto;
 import springbootboard.board.domain.board.repository.CommentRepository;
 
 import java.io.IOException;
@@ -30,10 +31,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class CommentServiceTest {
 
-    @Autowired CommentService commentService;
+    @Autowired
+    CommentService commentService;
     @Autowired CommentRepository commentRepository;
     @Autowired MemberRepository memberRepository;
-    @Autowired PostService postService;
+    @Autowired
+    PostService postService;
 
     static String POST_ID = "postId";
     static String MEMBER_ID = "memberId";

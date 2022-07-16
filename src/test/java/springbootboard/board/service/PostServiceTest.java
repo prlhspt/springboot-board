@@ -1,4 +1,4 @@
-package springbootboard.board.domain.board;
+package springbootboard.board.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,13 +9,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import springbootboard.board.domain.board.Post;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;
 import springbootboard.board.domain.member.MemberRepository;
 import springbootboard.board.domain.member.Role;
-import springbootboard.board.domain.board.dto.*;
 import springbootboard.board.domain.board.repository.PostQueryRepository;
 import springbootboard.board.domain.board.repository.PostRepository;
+import springbootboard.board.web.dto.PostListResponseDto;
+import springbootboard.board.web.dto.PostResponseDto;
+import springbootboard.board.web.dto.PostSaveRequestDto;
+import springbootboard.board.web.dto.PostSearchCond;
 
 import java.io.IOException;
 import java.util.ArrayList;

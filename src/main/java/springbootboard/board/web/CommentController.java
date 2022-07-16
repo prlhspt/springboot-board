@@ -10,9 +10,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import springbootboard.board.config.auth.LoginUser;
 import springbootboard.board.config.auth.dto.SessionUser;
 import springbootboard.board.domain.board.Comment;
-import springbootboard.board.domain.board.CommentService;
-import springbootboard.board.domain.board.dto.CommentSaveRequestDto;
-import springbootboard.board.domain.board.dto.PostResponseDto;
+import springbootboard.board.service.CommentService;
+import springbootboard.board.web.dto.CommentSaveRequestDto;
+import springbootboard.board.web.dto.PostResponseDto;
 
 import javax.validation.Valid;
 

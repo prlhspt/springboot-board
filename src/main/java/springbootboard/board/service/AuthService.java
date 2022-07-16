@@ -1,4 +1,4 @@
-package springbootboard.board.web;
+package springbootboard.board.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

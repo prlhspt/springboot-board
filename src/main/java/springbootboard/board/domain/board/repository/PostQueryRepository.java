@@ -10,10 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import springbootboard.board.domain.board.Post;
-import springbootboard.board.domain.board.dto.PostListResponseDto;
-import springbootboard.board.domain.board.dto.PostResponseDto;
-import springbootboard.board.domain.board.dto.PostSearchCond;
-import springbootboard.board.domain.board.dto.QPostResponseDto;
+import springbootboard.board.web.dto.PostListResponseDto;
+import springbootboard.board.web.dto.PostResponseDto;
+import springbootboard.board.web.dto.PostSearchCond;
+import springbootboard.board.web.dto.QPostResponseDto;
 
 import java.util.List;
 import java.util.function.Supplier;

@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import springbootboard.board.domain.board.Post;
-import springbootboard.board.domain.board.dto.PostResponseDto;
 import springbootboard.board.domain.board.repository.PostQueryRepository;
 import springbootboard.board.domain.member.LoginType;
 import springbootboard.board.domain.member.Member;

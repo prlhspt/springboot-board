@@ -3,8 +3,8 @@ package springbootboard.board.domain.board.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import springbootboard.board.domain.board.dto.AttachmentResponseDto;
-import springbootboard.board.domain.board.dto.QAttachmentResponseDto;
+import springbootboard.board.web.dto.AttachmentResponseDto;
+import springbootboard.board.web.dto.QAttachmentResponseDto;
 
 import java.util.List;
 
